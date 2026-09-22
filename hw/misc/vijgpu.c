@@ -129,7 +129,7 @@
 #include "hw/core/qdev-properties.h"
 #include "qom/object.h"
 #include "qapi/error.h"
-#include "exec/memory.h"
+#include "system/memory.h"
 
 /* -----------------------------------------------------------------------
  * Type / QOM declarations
