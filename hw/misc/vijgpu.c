@@ -833,8 +833,10 @@ static void vijgpu_realize(PCIDevice *pdev, Error **errp)
     if (s->vram_size < VIJGPU_VRAM_MIN || s->vram_size > VIJGPU_VRAM_MAX) {
         error_setg(errp,
                    "vijgpu: vram_size 0x%"PRIx64" out of range "
-                   "[0x%x, 0x%"PRIx64"]",
-                   s->vram_size, VIJGPU_VRAM_MIN, VIJGPU_VRAM_MAX);
+                   "[0x%"PRIx64", 0x%"PRIx64"]",
+                   s->vram_size,
+                   (uint64_t)VIJGPU_VRAM_MIN,
+                   (uint64_t)VIJGPU_VRAM_MAX);
         return;
     }
 
