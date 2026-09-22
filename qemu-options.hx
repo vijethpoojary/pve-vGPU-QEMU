@@ -1393,6 +1393,9 @@ legacy PC, they are not recommended for modern configurations.
 
 ERST
 
+DEF("id", HAS_ARG, QEMU_OPTION_id,
+    "-id n           set the VMID", QEMU_ARCH_ALL)
+
 DEF("fda", HAS_ARG, QEMU_OPTION_fda,
     "-fda/-fdb file  use 'file' as floppy disk 0/1 image\n", QEMU_ARCH_ALL)
 DEF("fdb", HAS_ARG, QEMU_OPTION_fdb, "", QEMU_ARCH_ALL)
@@ -5167,6 +5170,18 @@ DEF("loadvm", HAS_ARG, QEMU_OPTION_loadvm, \
 SRST
 ``-loadvm file``
     Start right away with a saved state (``loadvm`` in monitor)
+ERST
+
+DEF("loadstate", HAS_ARG, QEMU_OPTION_loadstate, \
+    "-loadstate file\n" \
+    "                start right away with a saved state\n",
+    QEMU_ARCH_ALL)
+SRST
+``-loadstate file``
+  Start right away with a saved state. This option does not rollback
+  disk state like @code{loadvm}, so user must make sure that disk
+  have correct state. @var{file} can be any valid device URL. See the section
+  for "Device URL Syntax" for more information.
 ERST
 
 #if !defined(_WIN32) && !defined(EMSCRIPTEN)

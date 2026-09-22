@@ -173,6 +173,7 @@ static const char *accelerators;
 static bool have_custom_ram_size;
 static const char *ram_memdev_id;
 static QDict *machine_opts_dict;
+static const char *loadstate;
 static QTAILQ_HEAD(, ObjectOption) object_opts = QTAILQ_HEAD_INITIALIZER(object_opts);
 static QTAILQ_HEAD(, DeviceOption) device_opts = QTAILQ_HEAD_INITIALIZER(device_opts);
 static int display_remote;
@@ -1678,6 +1679,7 @@ static MachineClass *select_machine(QDict *qdict, Error **errp)
 {
     ERRP_GUARD();
     const char *machine_type = qdict_get_try_str(qdict, "type");
+    const char *pvever = qdict_get_try_str(qdict, "pvever");
     g_autoptr(GSList) machines = object_class_get_list(target_machine_typename(),
                                                        false);
     MachineClass *machine_class = NULL;
@@ -1698,7 +1700,11 @@ static MachineClass *select_machine(QDict *qdict, Error **errp)
     if (!machine_class) {
         error_append_hint(errp,
                           "Use -machine help to list supported machines\n");
+    } else {
+        machine_class->pve_version = g_strdup(pvever);
+        qdict_del(qdict, "pvever");
     }
+
     return machine_class;
 }
 
@@ -2814,6 +2820,12 @@ void qmp_x_exit_preconfig(Error **errp)
         RunState state = autostart ? RUN_STATE_RUNNING : runstate_get();
         load_snapshot(loadvm, NULL, false, NULL, &error_fatal);
         load_snapshot_resume(state);
+    } else if (loadstate) {
+        Error *local_err = NULL;
+        if (load_snapshot_from_blockdev(loadstate, &local_err) < 0) {
+            error_report_err(local_err);
+            autostart = 0;
+        }
     }
     if (replay_mode != REPLAY_MODE_NONE) {
         replay_vmstate_init();
@@ -2847,6 +2859,7 @@ void qemu_init(int argc, char **argv)
     MachineClass *machine_class;
     bool userconfig = true;
     FILE *vmstate_dump_file = NULL;
+    long vm_id;
 
     qemu_add_opts(&qemu_drive_opts);
     qemu_add_drive_opts(&qemu_legacy_drive_opts);
@@ -3358,6 +3371,9 @@ void qemu_init(int argc, char **argv)
             case QEMU_OPTION_loadvm:
                 loadvm = optarg;
                 break;
+            case QEMU_OPTION_loadstate:
+                loadstate = optarg;
+                break;
             case QEMU_OPTION_full_screen:
                 dpy.has_full_screen = true;
                 dpy.full_screen = true;
@@ -3401,12 +3417,31 @@ void qemu_init(int argc, char **argv)
             case QEMU_OPTION_machine:
                 {
                     bool help;
+                    size_t pvever_index, name_len;
+                    const gchar *name;
+                    gchar *name_clean, *pvever;
 
                     keyval_parse_into(machine_opts_dict, optarg, "type", &help, &error_fatal);
                     if (help) {
                         machine_help_func(machine_opts_dict);
                         exit(EXIT_SUCCESS);
                     }
+
+                    // PVE version is specified with '+' as seperator, e.g. pc-i440fx+pvever
+                    name = qdict_get_try_str(machine_opts_dict, "type");
+                    if (name != NULL) {
+                        name_len = strlen(name);
+                        pvever_index = strcspn(name, "+");
+                        if (pvever_index < name_len) {
+                            name_clean = g_strndup(name, pvever_index);
+                            pvever = g_strndup(name + pvever_index + 1, name_len - pvever_index - 1);
+                            qdict_put_str(machine_opts_dict, "pvever", pvever);
+                            qdict_put_str(machine_opts_dict, "type", name_clean);
+                            g_free(name_clean);
+                            g_free(pvever);
+                        }
+                    }
+
                     break;
                 }
             case QEMU_OPTION_accel:
@@ -3459,6 +3494,13 @@ void qemu_init(int argc, char **argv)
             case QEMU_OPTION_smp:
                 machine_parse_property_opt(qemu_find_opts("smp-opts"),
                                            "smp", optarg);
+                break;
+            case QEMU_OPTION_id:
+                vm_id = strtol(optarg, (char **)&optarg, 10);
+                if (*optarg != 0 || vm_id < 100 || vm_id > INT_MAX) {
+                    error_report("invalid -id argument %s", optarg);
+                    exit(1);
+                }
                 break;
 #ifdef CONFIG_VNC
             case QEMU_OPTION_vnc:

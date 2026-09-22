@@ -1,0 +1,4 @@
+#!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+exec /root/pve-vGPU-QEMU/build3/pyvenv/bin/meson devenv -C /root/pve-vGPU-QEMU/build3 -w "$PWD" "$@"

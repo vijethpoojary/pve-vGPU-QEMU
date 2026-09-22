@@ -1,0 +1,179 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+include /usr/share/dpkg/default.mk
+
+PACKAGE=pve-qemu-kvm
+destdir := $(CURDIR)/debian/$(PACKAGE)
+
+flagfile := $(destdir)/usr/share/kvm/recognized-CPUID-flags-x86_64
+
+machine_file_x86_64 := $(destdir)/usr/share/kvm/machine-versions-x86_64.json
+machine_file_aarch64 := $(destdir)/usr/share/kvm/machine-versions-aarch64.json
+
+cpu_models_file_x86_64 := $(destdir)/usr/share/kvm/cpu-models-x86_64.json
+cpu_models_file_aarch64 := $(destdir)/usr/share/kvm/cpu-models-aarch64.json
+
+# default QEMU out-of-tree build directory is ./build
+BUILDDIR=build
+
+# FIXME: pass to configure as --extra-cflags=CFLAGS ?! also LDFLAGS?
+CFLAGS += -Wall
+
+export CFLAGS
+
+# DEB_BUILD_OPTIONS=parallel=N
+MAKEFLAGS += $(subst parallel=,-j,$(filter parallel=%,${DEB_BUILD_OPTIONS}))
+
+${BUILDDIR}/config.status: configure
+	dh_testdir
+	# Add here commands to configure the package.
+
+ifneq "$(wildcard /usr/share/misc/config.sub)" ""
+	cp -f /usr/share/misc/config.sub config.sub
+endif
+ifneq "$(wildcard /usr/share/misc/config.guess)" ""
+	cp -f /usr/share/misc/config.guess config.guess
+endif
+
+	# guest-agent is only required for guest systems
+	./configure \
+	    --disable-download \
+	    --docdir=/usr/share/doc/pve-qemu-kvm \
+	    --localstatedir=/var \
+	    --prefix=/usr \
+	    --sysconfdir=/etc \
+	    --target-list=x86_64-softmmu,aarch64-softmmu \
+	    --with-suffix="kvm" \
+	    --with-pkgversion="${DEB_SOURCE}_${DEB_VERSION_UPSTREAM_REVISION}" \
+	    --audio-drv-list="alsa" \
+	    --datadir=/usr/share \
+	    --libexecdir=/usr/lib/kvm \
+	    --disable-capstone \
+	    --disable-gtk \
+	    --disable-guest-agent \
+	    --disable-guest-agent-msi \
+	    --disable-libnfs \
+	    --disable-libssh \
+	    --disable-sdl \
+	    --disable-smartcard \
+	    --disable-strip \
+	    --disable-xen \
+	    --enable-curl \
+	    --enable-docs \
+	    --enable-fuse \
+	    --enable-gnutls \
+	    --enable-libiscsi \
+	    --enable-libusb \
+	    --enable-linux-aio \
+	    --enable-linux-io-uring \
+	    --enable-numa \
+	    --enable-opengl \
+	    --enable-rbd \
+	    --enable-seccomp \
+	    --enable-slirp \
+	    --enable-spice \
+	    --enable-usb-redir \
+	    --enable-virglrenderer \
+	    --enable-virtfs \
+	    --enable-zstd
+
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
+build: build-stamp
+
+build-stamp: ${BUILDDIR}/config.status
+	dh_testdir
+
+	# Add here commands to compile the package.
+	$(MAKE)
+
+	#docbook-to-man debian/kvm.sgml > kvm.1
+
+	touch $@
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	# Add here commands to clean up before the build process.
+	-$(MAKE) distclean
+
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+	dh_lintian
+
+	# Add here commands to install the package into debian/pve-kvm.
+	$(MAKE) DESTDIR=$(destdir) install
+
+	# Remove things we don't package at all, would be a "kvm-dev" package
+	rm -Rf $(destdir)/usr/include/linux/
+	rm -Rf $(destdir)/usr/include
+	rm -f $(destdir)/usr/lib/kvm/qemu-bridge-helper
+	rm -f $(destdir)/usr/lib/kvm/virtfs-proxy-helper
+
+	# CPU flags are static for QEMU version, allows avoiding more costly checks
+	$(destdir)/usr/bin/qemu-system-x86_64 -cpu help | ./debian/parse-cpu-flags.pl > $(flagfile)
+
+	# Supported machine versions are static for a given QEMU binary.
+	$(destdir)/usr/bin/qemu-system-x86_64 -machine help | ./debian/parse-machines.pl > $(machine_file_x86_64)
+	$(destdir)/usr/bin/qemu-system-aarch64 -machine help | ./debian/parse-machines.pl > $(machine_file_aarch64)
+
+	# Supported CPU models are static for a given QEMU binary.
+	$(destdir)/usr/bin/qemu-system-x86_64 -cpu help | ./debian/parse-cpu-models.pl > $(cpu_models_file_x86_64)
+	$(destdir)/usr/bin/qemu-system-aarch64 -cpu help | ./debian/parse-cpu-models.pl > $(cpu_models_file_aarch64)
+	# NOTE: If the diff fails here after upgrading the QEMU submodule, check which new models
+	# are to be picked up and which are to be excluded, adapt to other changes and commit the
+	# new expected files (and parse-cpu-models.pl script).
+	diff -u $(cpu_models_file_x86_64) ./debian/cpu-models-x86_64.json
+	diff -u $(cpu_models_file_aarch64) ./debian/cpu-models-aarch64.json
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_installexamples
+	dh_install
+#	dh_installmenu
+#	dh_installdebconf
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+#	dh_python
+#	dh_installinit
+#	dh_installcron
+#	dh_installinfo
+	dh_installman
+	dh_link
+	dh_strip --dbgsym-migration='pve-qemu-kvm-dbg (<<8.0.0-1~)'
+	dh_compress
+	dh_fixperms
+#	dh_perl
+#	dh_makeshlibs
+	dh_installdeb
+	# Debian >= Buster has libglusterfs0 and lots of libgfFOO, upstream has the libs in glusterfs-common
+	# pass -x to dpkg-shlibdeps and specify dependencies in d/control instead
+	dh_shlibdeps -- -xlibglusterfs0 -xlibgfxdr0 -xlibgfrpc0 -xlibgfdb0 -xlibgfchangelog0 -xlibgfapi0
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

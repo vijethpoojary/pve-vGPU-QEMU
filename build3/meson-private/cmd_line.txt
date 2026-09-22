@@ -1,0 +1,35 @@
+[options]
+qemu_suffix = kvm
+audio_drv_list = alsa
+capstone = disabled
+gtk = disabled
+guest_agent = disabled
+libnfs = disabled
+libssh = disabled
+sdl = disabled
+smartcard = disabled
+strip = false
+xen = disabled
+curl = enabled
+fuse = enabled
+gnutls = enabled
+libiscsi = enabled
+libusb = enabled
+linux_aio = enabled
+linux_io_uring = enabled
+numa = enabled
+rbd = enabled
+seccomp = enabled
+slirp = enabled
+spice = enabled
+usb_redir = enabled
+virglrenderer = enabled
+virtfs = enabled
+zstd = enabled
+docs = enabled
+plugins = true
+wrap_mode = nodownload
+
+[properties]
+native_file = ['/root/pve-vGPU-QEMU/build3/config-meson.cross']
+

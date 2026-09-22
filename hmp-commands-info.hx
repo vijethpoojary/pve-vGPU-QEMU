@@ -476,6 +476,20 @@ SRST
     Show the current VM UUID.
 ERST
 
+
+    {
+        .name       = "backup",
+        .args_type  = "",
+        .params     = "",
+        .help       = "show backup status",
+        .cmd        = hmp_info_backup,
+    },
+
+SRST
+  ``info backup``
+    Show backup status.
+ERST
+
 #if defined(CONFIG_SLIRP)
     {
         .name       = "usernet",
@@ -528,6 +542,19 @@ ERST
 SRST
   ``info migrate_parameters``
     Show current migration parameters.
+ERST
+
+    {
+        .name       = "savevm",
+        .args_type  = "",
+        .params     = "",
+        .help       = "show savevm status",
+        .cmd = hmp_info_savevm,
+    },
+
+SRST
+  ``info savevm``
+    Show savevm status.
 ERST
 
     {

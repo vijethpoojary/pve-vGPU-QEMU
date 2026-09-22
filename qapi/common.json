@@ -228,3 +228,17 @@
 ##
 { 'enum': 'EndianMode',
   'data': [ 'unspecified', 'little', 'big' ] }
+
+##
+# @UuidInfo:
+#
+# Guest UUID information (Universally Unique Identifier).
+#
+# @UUID: the UUID of the guest
+#
+# Since: 0.14.0
+#
+# .. note:: If no UUID was specified for the guest, a null UUID is
+#     returned.
+##
+{ 'struct': 'UuidInfo', 'data': {'UUID': 'str'} }

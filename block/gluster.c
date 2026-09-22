@@ -42,7 +42,7 @@
 #define GLUSTER_DEBUG_DEFAULT       4
 #define GLUSTER_DEBUG_MAX           9
 #define GLUSTER_OPT_LOGFILE         "logfile"
-#define GLUSTER_LOGFILE_DEFAULT     "-" /* handled in libgfapi as /dev/stderr */
+#define GLUSTER_LOGFILE_DEFAULT     NULL
 /*
  * Several versions of GlusterFS (3.12? -> 6.0.1) fail when the transfer size
  * is greater or equal to 1024 MiB, so we are limiting the transfer size to 512
@@ -56,6 +56,7 @@ typedef struct GlusterAIOCB {
     int64_t size;
     int ret;
     Coroutine *coroutine;
+    bool is_write;
 } GlusterAIOCB;
 
 typedef struct BDRVGlusterState {
@@ -420,6 +421,7 @@ static struct glfs *qemu_gluster_glfs_init(BlockdevOptionsGluster *gconf,
     int old_errno;
     SocketAddressList *server;
     uint64_t port;
+    const char *logfile;
 
     glfs = glfs_find_preopened(gconf->volume);
     if (glfs) {
@@ -462,9 +464,15 @@ static struct glfs *qemu_gluster_glfs_init(BlockdevOptionsGluster *gconf,
         }
     }
 
-    ret = glfs_set_logging(glfs, gconf->logfile, gconf->debug);
-    if (ret < 0) {
-        goto out;
+    logfile = gconf->logfile;
+    if (!logfile && !is_daemonized()) {
+        logfile = "-";
+    }
+    if (logfile) {
+        ret = glfs_set_logging(glfs, logfile, gconf->debug);
+        if (ret < 0) {
+            goto out;
+        }
     }
 
     ret = glfs_init(glfs);
@@ -738,8 +746,10 @@ static void gluster_finish_aiocb(struct glfs_fd *fd, ssize_t ret,
         acb->ret = 0; /* Success */
     } else if (ret < 0) {
         acb->ret = -errno; /* Read/Write failed */
+    } else if (acb->is_write) {
+        acb->ret = -EIO; /* Partial write - fail it */
     } else {
-        acb->ret = -EIO; /* Partial read/write - fail it */
+        acb->ret = 0; /* Success */
     }
 
     /*
@@ -1015,6 +1025,7 @@ static coroutine_fn int qemu_gluster_co_pwrite_zeroes(BlockDriverState *bs,
     acb.size = bytes;
     acb.ret = 0;
     acb.coroutine = qemu_coroutine_self();
+    acb.is_write = true;
 
     ret = glfs_zerofill_async(s->fd, offset, bytes, gluster_finish_aiocb, &acb);
     if (ret < 0) {
@@ -1194,9 +1205,11 @@ static coroutine_fn int qemu_gluster_co_rw(BlockDriverState *bs,
     acb.coroutine = qemu_coroutine_self();
 
     if (write) {
+        acb.is_write = true;
         ret = glfs_pwritev_async(s->fd, qiov->iov, qiov->niov, offset, 0,
                                  gluster_finish_aiocb, &acb);
     } else {
+        acb.is_write = false;
         ret = glfs_preadv_async(s->fd, qiov->iov, qiov->niov, offset, 0,
                                 gluster_finish_aiocb, &acb);
     }
@@ -1258,6 +1271,7 @@ static coroutine_fn int qemu_gluster_co_flush_to_disk(BlockDriverState *bs)
     acb.size = 0;
     acb.ret = 0;
     acb.coroutine = qemu_coroutine_self();
+    acb.is_write = true;
 
     ret = glfs_fsync_async(s->fd, gluster_finish_aiocb, &acb);
     if (ret < 0) {
@@ -1305,6 +1319,7 @@ static coroutine_fn int qemu_gluster_co_pdiscard(BlockDriverState *bs,
     acb.size = 0;
     acb.ret = 0;
     acb.coroutine = qemu_coroutine_self();
+    acb.is_write = true;
 
     ret = glfs_discard_async(s->fd, offset, bytes, gluster_finish_aiocb, &acb);
     if (ret < 0) {

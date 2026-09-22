@@ -29,28 +29,6 @@
 
 #include "block/copy-before-write.h"
 
-typedef struct BackupBlockJob {
-    BlockJob common;
-    BlockDriverState *cbw;
-    BlockDriverState *source_bs;
-    BlockDriverState *target_bs;
-
-    BdrvDirtyBitmap *sync_bitmap;
-
-    MirrorSyncMode sync_mode;
-    BitmapSyncMode bitmap_mode;
-    BlockdevOnError on_source_error;
-    BlockdevOnError on_target_error;
-    uint64_t len;
-    int64_t cluster_size;
-    BackupPerf perf;
-
-    BlockCopyState *bcs;
-
-    bool wait;
-    BlockCopyCallState *bg_bcs_call;
-} BackupBlockJob;
-
 static const BlockJobDriver backup_job_driver;
 
 static void backup_cleanup_sync_bitmap(BackupBlockJob *job, int ret)
@@ -237,8 +215,8 @@ static void backup_init_bcs_bitmap(BackupBlockJob *job)
                                          true);
     } else if (job->sync_mode == MIRROR_SYNC_MODE_TOP) {
         /*
-         * We can't hog the coroutine to initialize this thoroughly.
-         * Set a flag and resume work when we are able to yield safely.
+         * Initialization is costly here. Simply set a flag and let the
+         * backup_run coroutine resume work once it can yield safely.
          */
         block_copy_set_skip_unallocated(job->bcs, true);
     }
@@ -251,8 +229,6 @@ static int coroutine_fn backup_run(Job *job, Error **errp)
 {
     BackupBlockJob *s = container_of(job, BackupBlockJob, common.job);
     int ret;
-
-    backup_init_bcs_bitmap(s);
 
     if (s->sync_mode == MIRROR_SYNC_MODE_TOP) {
         int64_t offset = 0;
@@ -465,6 +441,14 @@ BlockJob *backup_job_create(const char *job_id, BlockDriverState *bs,
     }
 
     cluster_size = block_copy_cluster_size(bcs);
+    if (cluster_size < 0) {
+        goto error;
+    }
+
+    BlockDriverInfo bdi;
+    if (bdrv_get_info(bs, &bdi) == 0) {
+        cluster_size = MAX(cluster_size, bdi.cluster_size);
+    }
 
     if (perf->max_chunk && perf->max_chunk < cluster_size) {
         error_setg(errp, "Required max-chunk (%" PRIi64 ") is less than backup "
@@ -502,6 +486,8 @@ BlockJob *backup_job_create(const char *job_id, BlockDriverState *bs,
     block_job_add_bdrv(&job->common, "target", target, 0, BLK_PERM_ALL,
                        &error_abort);
     bdrv_graph_wrunlock();
+
+    backup_init_bcs_bitmap(job);
 
     return &job->common;
 

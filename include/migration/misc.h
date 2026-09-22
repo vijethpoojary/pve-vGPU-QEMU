@@ -156,4 +156,7 @@ bool multifd_device_state_save_thread_should_exit(void);
 void multifd_abort_device_state_save_threads(void);
 bool multifd_join_device_state_save_threads(void);
 
+/* migration/pbs-state.c */
+void pbs_state_mig_init(void);
+
 #endif

@@ -2149,6 +2149,10 @@ endif
 
 has_gettid = cc.has_function('gettid')
 
+libuuid = cc.find_library('uuid', required: true)
+libsystemd = cc.find_library('systemd', required: true)
+libproxmox_backup_qemu = cc.find_library('proxmox_backup_qemu', required: true)
+
 # libselinux
 selinux = dependency('libselinux',
                      required: get_option('selinux'),
@@ -3837,7 +3841,7 @@ if have_block
   elif host_os == 'emscripten'
     blockdev_ss.add(files('os-wasm.c'))
   else
-    blockdev_ss.add(files('os-posix.c'))
+    blockdev_ss.add(files('os-posix.c'), libsystemd)
   endif
 endif
 
@@ -4517,6 +4521,13 @@ if have_tools
                dependencies: [blockdev, qemuutil, selinux],
                install: true)
 
+  vma = executable('vma', files('vma.c', 'vma-reader.c') + genh,
+                   dependencies: [authz, block, crypto, io, qemuutil, qom], install: true)
+
+  pbs_restore = executable('pbs-restore', files('pbs-restore.c') + genh,
+                  dependencies: [authz, block, crypto, io, qemuutil, qom,
+                    libproxmox_backup_qemu], install: true)
+
   subdir('storage-daemon')
 
   foreach exe: [ 'qemu-img', 'qemu-io', 'qemu-nbd', 'qemu-storage-daemon']
@@ -4987,7 +4998,7 @@ summary_info += {'Query Processing Library support': qpl}
 summary_info += {'UADK Library support': uadk}
 summary_info += {'qatzip support':    qatzip}
 summary_info += {'NUMA host support': numa}
-summary_info += {'capstone':          capstone}
+summary_info += {'PBS bdrv support':  config_host.has_key('CONFIG_PBS_BDRV')}
 summary_info += {'libpmem support':   libpmem}
 summary_info += {'libdaxctl support': libdaxctl}
 summary_info += {'libcbor support':   libcbor}

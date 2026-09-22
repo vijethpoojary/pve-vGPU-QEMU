@@ -25,8 +25,10 @@
 #include "monitor/hmp-target.h"
 #include "monitor/monitor-internal.h"
 #include "qapi/error.h"
+#include "qapi/qapi-commands-block-core.h"
 #include "qapi/qapi-commands-control.h"
 #include "qapi/qapi-commands-machine.h"
+#include "qapi/qapi-commands-migration.h"
 #include "qapi/qapi-commands-misc.h"
 #include "qobject/qdict.h"
 #include "qemu/cutils.h"
@@ -122,6 +124,77 @@ void hmp_sync_profile(Monitor *mon, const QDict *qdict)
                    " expecting 'on', 'off', or 'reset'", op);
         hmp_handle_error(mon, err);
     }
+}
+
+void hmp_info_backup(Monitor *mon, const QDict *qdict)
+{
+    BackupStatus *info;
+    PBSBitmapInfoList *bitmap_info;
+
+    info = qmp_query_backup(NULL);
+
+    if (!info) {
+       monitor_printf(mon, "Backup status: not initialized\n");
+       return;
+    }
+
+    if (info->status) {
+        if (info->errmsg) {
+            monitor_printf(mon, "Backup status: %s - %s\n",
+                           info->status, info->errmsg);
+        } else {
+            monitor_printf(mon, "Backup status: %s\n", info->status);
+        }
+    }
+
+    if (info->backup_file) {
+        monitor_printf(mon, "Start time: %s", ctime(&info->start_time));
+        if (info->end_time) {
+            monitor_printf(mon, "End time: %s", ctime(&info->end_time));
+        }
+
+        monitor_printf(mon, "Backup file: %s\n", info->backup_file);
+        monitor_printf(mon, "Backup uuid: %s\n", info->uuid);
+
+        if (!(info->has_total && info->total))  {
+            // this should not happen normally
+            monitor_printf(mon, "Total size: %d\n", 0);
+        } else {
+            size_t total_or_dirty = info->total;
+            bitmap_info = qmp_query_pbs_bitmap_info(NULL);
+
+            while (bitmap_info) {
+                monitor_printf(mon, "Drive %s:\n",
+                        bitmap_info->value->drive);
+                monitor_printf(mon, "  bitmap action: %s\n",
+                        PBSBitmapAction_str(bitmap_info->value->action));
+                monitor_printf(mon, "  size: %zd\n",
+                        bitmap_info->value->size);
+                monitor_printf(mon, "  dirty: %zd\n",
+                        bitmap_info->value->dirty);
+                bitmap_info = bitmap_info->next;
+            }
+
+            qapi_free_PBSBitmapInfoList(bitmap_info);
+
+            int zero_per = (info->has_zero_bytes && info->zero_bytes) ?
+                (info->zero_bytes * 100)/info->total : 0;
+            monitor_printf(mon, "Total size: %zd\n", info->total);
+            int trans_per = (info->transferred * 100)/total_or_dirty;
+            monitor_printf(mon, "Transferred bytes: %zd (%d%%)\n",
+                           info->transferred, trans_per);
+            monitor_printf(mon, "Zero bytes: %zd (%d%%)\n",
+                           info->zero_bytes, zero_per);
+
+            if (info->has_reused) {
+                int reused_per = (info->reused * 100)/total_or_dirty;
+                monitor_printf(mon, "Reused bytes: %zd (%d%%)\n",
+                               info->reused, reused_per);
+            }
+        }
+    }
+
+    qapi_free_BackupStatus(info);
 }
 
 void hmp_exit_preconfig(Monitor *mon, const QDict *qdict)
@@ -441,6 +514,43 @@ void hmp_dumpdtb(Monitor *mon, const QDict *qdict)
     monitor_printf(mon, "DTB dumped to '%s'\n", filename);
 }
 #endif
+
+void hmp_savevm_start(Monitor *mon, const QDict *qdict)
+{
+    Error *errp = NULL;
+    const char *statefile = qdict_get_try_str(qdict, "statefile");
+
+    qmp_savevm_start(statefile, &errp);
+    hmp_handle_error(mon, errp);
+}
+
+void coroutine_fn hmp_savevm_end(Monitor *mon, const QDict *qdict)
+{
+    Error *errp = NULL;
+
+    qmp_savevm_end(&errp);
+    hmp_handle_error(mon, errp);
+}
+
+void hmp_info_savevm(Monitor *mon, const QDict *qdict)
+{
+    SaveVMInfo *info;
+    info = qmp_query_savevm(NULL);
+
+    if (info->status) {
+        monitor_printf(mon, "savevm status: %s\n", info->status);
+        monitor_printf(mon, "total time: %" PRIu64 " milliseconds\n",
+                       info->total_time);
+    } else {
+        monitor_printf(mon, "savevm status: not running\n");
+    }
+    if (info->has_bytes) {
+        monitor_printf(mon, "Bytes saved: %"PRIu64"\n", info->bytes);
+    }
+    if (info->error) {
+        monitor_printf(mon, "Error: %s\n", info->error);
+    }
+}
 
 /* Set the current CPU defined by the user. Callers must hold BQL. */
 int monitor_set_cpu(Monitor *mon, int cpu_index)

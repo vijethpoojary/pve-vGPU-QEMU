@@ -329,6 +329,7 @@ void migration_object_init(void)
 
     /* Initialize cpu throttle timers */
     cpu_throttle_init();
+    pbs_state_mig_init();
 }
 
 typedef struct {
@@ -1880,6 +1881,30 @@ bool migration_is_blocked(Error **errp)
     if (blockers) {
         error_propagate(errp, error_copy(blockers->data));
         return true;
+    }
+
+    return false;
+}
+
+bool savevm_async_is_blocked(Error **errp)
+{
+    GSList *blockers = migration_blockers[migrate_mode()];
+
+    if (qemu_savevm_state_blocked(errp)) {
+        return true;
+    }
+
+    /*
+     * The limitation for VMDK images only applies to live-migration, not
+     * snapshots, see commit 5aaac46793 ("migration: savevm: consult migration
+     * blockers").
+     */
+    while (blockers) {
+        if (strcmp(error_get_pretty(blockers->data), MIGRATION_BLOCKER_VMDK)) {
+            error_propagate(errp, error_copy(blockers->data));
+            return true;
+        }
+        blockers = g_slist_next(blockers);
     }
 
     return false;

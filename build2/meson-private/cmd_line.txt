@@ -1,0 +1,9 @@
+[options]
+docs = disabled
+plugins = true
+libiscsi = enabled
+linux_io_uring = enabled
+
+[properties]
+native_file = ['/root/pve-vGPU-QEMU/build2/config-meson.cross']
+
