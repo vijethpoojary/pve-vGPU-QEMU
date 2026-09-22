@@ -456,7 +456,7 @@ static void ide_trim_bh_cb(void *opaque)
     iocb->bh = NULL;
     qemu_aio_unref(iocb);
 
-    /* Paired with an increment in ide_issue_trim() */
+    /* Paired with an increment in ide_issue_trim_cb() */
     blk_dec_in_flight(blk);
 }
 
@@ -516,6 +516,8 @@ static void ide_issue_trim_cb(void *opaque, int ret)
 done:
     iocb->aiocb = NULL;
     if (iocb->bh) {
+        /* Paired with a decrement in ide_trim_bh_cb() */
+        blk_inc_in_flight(s->blk);
         replay_bh_schedule_event(iocb->bh);
     }
 }
@@ -527,9 +529,6 @@ BlockAIOCB *ide_issue_trim(
     IDEState *s = opaque;
     IDEDevice *dev = s->unit ? s->bus->slave : s->bus->master;
     TrimAIOCB *iocb;
-
-    /* Paired with a decrement in ide_trim_bh_cb() */
-    blk_inc_in_flight(s->blk);
 
     iocb = blk_aio_get(&trim_aiocb_info, s->blk, cb, cb_opaque);
     iocb->s = s;
@@ -754,8 +753,9 @@ void ide_cancel_dma_sync(IDEState *s)
      */
     if (s->bus->dma->aiocb) {
         trace_ide_cancel_dma_sync_remaining();
-        blk_drain(s->blk);
-        assert(s->bus->dma->aiocb == NULL);
+        while (s->bus->dma->aiocb) {
+            blk_drain(s->blk);
+        }
     }
 }
 

@@ -51,23 +51,11 @@
 #define FUSE_MAX_READ_BYTES (MIN(BDRV_REQUEST_MAX_BYTES, 1 * 1024 * 1024))
 #define FUSE_MAX_WRITE_BYTES (64 * 1024)
 
-/*
- * fuse_init_in structure before 7.36.  We don't need the flags2 field added
- * there, so we can work with the smaller older structure to stay compatible
- * with older kernels.
- */
-struct fuse_init_in_compat {
-    uint32_t major;
-    uint32_t minor;
-    uint32_t max_readahead;
-    uint32_t flags;
-};
-
 typedef struct FuseRequestInHeader {
     struct fuse_in_header common;
     /* All supported requests */
     union {
-        struct fuse_init_in_compat init;
+        struct fuse_init_in init;
         struct fuse_open_in open;
         struct fuse_setattr_in setattr;
         struct fuse_read_in read;
@@ -826,9 +814,11 @@ static bool is_regular_file(const char *path, Error **errp)
  */
 static ssize_t coroutine_fn GRAPH_RDLOCK
 fuse_co_init(FuseExport *exp, struct fuse_init_out *out,
-             const struct fuse_init_in_compat *in)
+             const struct fuse_init_in *in)
 {
-    const uint32_t supported_flags = FUSE_ASYNC_READ | FUSE_ASYNC_DIO;
+    const uint32_t supported_flags = FUSE_ASYNC_READ | FUSE_ASYNC_DIO
+        | FUSE_INIT_EXT | FUSE_ATOMIC_O_TRUNC;
+    const uint32_t supported_flags2 = (FUSE_DIRECT_IO_ALLOW_MMAP >> 32);
 
     if (in->major != 7) {
         error_report("FUSE major version mismatch: We have 7, but kernel has %"
@@ -836,9 +826,9 @@ fuse_co_init(FuseExport *exp, struct fuse_init_out *out,
         return -EINVAL;
     }
 
-    /* 2007's 7.9 added fuse_attr.blksize; working around that would be hard */
-    if (in->minor < 9) {
-        error_report("FUSE minor version too old: 9 required, but kernel has %"
+    /* Kernel 5.17's 7.36 protocol version added FUSE_INIT_EXT */
+    if (in->minor < 36) {
+        error_report("FUSE minor version too old: 36 required, but kernel has %"
                      PRIu32, in->minor);
         return -EINVAL;
     }
@@ -849,7 +839,7 @@ fuse_co_init(FuseExport *exp, struct fuse_init_out *out,
         .max_readahead = in->max_readahead,
         .max_write = FUSE_MAX_WRITE_BYTES,
         .flags = in->flags & supported_flags,
-        .flags2 = 0,
+        .flags2 = in->flags2 & supported_flags2,
 
         /* libfuse maximum: 2^16 - 1 */
         .max_background = UINT16_MAX,

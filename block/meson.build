@@ -2,8 +2,10 @@ block_ss.add(genh)
 block_ss.add(files(
   'accounting.c',
   'aio_task.c',
+  'alloc-track.c',
   'amend.c',
   'backup.c',
+  'backup-dump.c',
   'blkdebug.c',
   'blklogwrites.c',
   'blkverify.c',
@@ -39,7 +41,17 @@ block_ss.add(files(
   'throttle.c',
   'throttle-groups.c',
   'write-threshold.c',
+  'zeroinit.c',
 ), zstd, zlib)
+
+block_ss.add(files('../vma-writer.c'), libuuid)
+block_ss.add(files(
+  '../proxmox-backup-client.c',
+  '../pve-backup.c',
+), libproxmox_backup_qemu)
+
+block_ss.add(files('pbs.c'), libproxmox_backup_qemu)
+
 
 system_ss.add(when: 'CONFIG_TCG', if_true: files('blkreplay.c'))
 system_ss.add(files('block-ram-registrar.c'))

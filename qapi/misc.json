@@ -450,6 +450,24 @@
 { 'command': 'query-fdsets', 'returns': ['FdsetInfo'] }
 
 ##
+# @savevm-start:
+#
+# Prepare for snapshot and halt VM.  Save VM state to statefile.
+#
+# @statefile: target file that state should be written to.
+#
+##
+{ 'command': 'savevm-start', 'data': { '*statefile': 'str' } }
+
+##
+# @savevm-end:
+#
+# Resume VM after a snapshot.
+#
+##
+{ 'command': 'savevm-end' }
+
+##
 # @CommandLineParameterType:
 #
 # Possible types for an option parameter.

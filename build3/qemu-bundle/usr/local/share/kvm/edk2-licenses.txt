@@ -1,0 +1,1 @@
+/root/pve-vGPU-QEMU/pc-bios/edk2-licenses.txt

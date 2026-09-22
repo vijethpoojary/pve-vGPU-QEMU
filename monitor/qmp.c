@@ -165,6 +165,8 @@ static void monitor_qmp_dispatch(MonitorQMP *mon, QObject *req)
     QDict *rsp;
     QDict *error;
 
+    int conn_nr_before = qatomic_read(&mon->connection_nr);
+
     rsp = qmp_dispatch(mon->commands, req, qmp_oob_enabled(mon),
                        &mon->common);
 
@@ -180,7 +182,17 @@ static void monitor_qmp_dispatch(MonitorQMP *mon, QObject *req)
         }
     }
 
-    monitor_qmp_respond(mon, rsp);
+    /*
+     * qmp_dispatch might have yielded and waited for a BH, in which case there
+     * is a chance a new client connected in the meantime - if this happened,
+     * the command will not have been executed, but we also need to ensure that
+     * we don't send back a corresponding response on a line that no longer
+     * belongs to this request.
+     */
+    if (conn_nr_before == qatomic_read(&mon->connection_nr)) {
+        monitor_qmp_respond(mon, rsp);
+    }
+
     qobject_unref(rsp);
 }
 
@@ -462,6 +474,7 @@ static void monitor_qmp_event(void *opaque, QEMUChrEvent event)
 
     switch (event) {
     case CHR_EVENT_OPENED:
+        qatomic_inc_fetch(&mon->connection_nr);
         WITH_QEMU_LOCK_GUARD(&mon->common.mon_lock) {
             mon->commands = &qmp_cap_negotiation_commands;
             monitor_qmp_caps_reset(mon);
@@ -524,8 +537,7 @@ void monitor_init_qmp(Chardev *chr, bool pretty, Error **errp)
     qemu_chr_fe_set_echo(&mon->common.chr, true);
 
     /* Note: we run QMP monitor in I/O thread when @chr supports that */
-    monitor_data_init(&mon->common, true, false,
-                      qemu_chr_has_feature(chr, QEMU_CHAR_FEATURE_GCONTEXT));
+    monitor_data_init(&mon->common, true, false, false);
 
     mon->pretty = pretty;
 

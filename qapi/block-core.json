@@ -953,6 +953,365 @@
   'allow-preconfig': true }
 
 ##
+# @BackupStatus:
+#
+# Detailed backup status.
+#
+# @status: string describing the current backup status.
+#          This can be 'active', 'done', 'error'.  If this field is
+#          not returned, no backup process has been initiated
+#
+# @errmsg: error message (only returned if status is 'error')
+#
+# @total: total amount of bytes involved in the backup process
+#
+# @dirty: with incremental mode (PBS) this is the amount of bytes
+#         involved in the backup process which are marked dirty.
+#
+# @transferred: amount of bytes already backed up.
+#
+# @reused: amount of bytes reused due to deduplication.
+#
+# @zero-bytes: amount of 'zero' bytes detected.
+#
+# @start-time: time (epoch) when backup job started.
+#
+# @end-time: time (epoch) when backup job finished.
+#
+# @backup-file: backup file name
+#
+# @uuid: uuid for this backup job
+#
+# @finishing: if status='active' and finishing=true, then the backup
+#             process is waiting for the target to finish.
+#
+##
+{ 'struct': 'BackupStatus',
+  'data': {'*status': 'str', '*errmsg': 'str', '*total': 'int', '*dirty': 'int',
+           '*transferred': 'int', '*zero-bytes': 'int', '*reused': 'int',
+           '*start-time': 'int', '*end-time': 'int',
+           '*backup-file': 'str', '*uuid': 'str', 'finishing': 'bool' } }
+
+##
+# @BackupFormat:
+#
+# An enumeration of supported backup formats.
+#
+# @vma: Proxmox vma backup format
+#
+# @pbs: Proxmox backup server format
+#
+##
+{ 'enum': 'BackupFormat',
+  'data': [ 'vma', 'pbs' ] }
+
+##
+# @backup:
+#
+# Starts a VM backup.
+#
+# @backup-file: the backup file name
+#
+# @format: format of the backup file
+#
+# @config-file: a configuration file to include into
+#               the backup archive.
+#
+# @firewall-file: a firewall configuration file to include into the
+#     backup archive.
+#
+# @speed: the maximum speed, in bytes per second
+#
+# @devlist: list of block device names (separated by ',', ';' or ':').
+#     By default the backup includes all writable block devices.
+#
+# @password: backup server passsword (required for format 'pbs')
+#
+# @keyfile: keyfile used for encryption (optional for format 'pbs')
+#
+# @key-password: password for keyfile (optional for format 'pbs')
+#
+# @master-keyfile: PEM-formatted master public keyfile (optional for
+#     format 'pbs')
+#
+# @fingerprint: server cert fingerprint (optional for format 'pbs')
+#
+# @backup-ns: backup namespace (required for format 'pbs')
+#
+# @backup-id: backup ID (required for format 'pbs')
+#
+# @backup-time: backup timestamp (Unix epoch, required for format
+#     'pbs')
+#
+# @use-dirty-bitmap: use dirty bitmap to detect incremental changes
+#     since last job (optional for format 'pbs')
+#
+# @compress: use compression (optional for format 'pbs', defaults to
+#     true)
+#
+# @encrypt: use encryption ((optional for format 'pbs', defaults to
+#     true if there is a keyfile)
+#
+# @max-workers: see @BackupPerf for details.  Default 16.
+#
+# @fleecing: perform a backup with fleecing.  For each device in
+#     @devlist, a corresponing '-fleecing' device with the same size
+#     already needs to be present.
+#
+# Returns: the uuid of the backup job
+#
+##
+{ 'command': 'backup', 'data': { 'backup-file': 'str',
+                                    '*password': 'str',
+                                    '*keyfile': 'str',
+                                    '*key-password': 'str',
+                                    '*master-keyfile': 'str',
+                                    '*fingerprint': 'str',
+                                    '*backup-ns': 'str',
+                                    '*backup-id': 'str',
+                                    '*backup-time': 'int',
+                                    '*use-dirty-bitmap': 'bool',
+                                    '*compress': 'bool',
+                                    '*encrypt': 'bool',
+                                    '*format': 'BackupFormat',
+                                    '*config-file': 'str',
+                                    '*firewall-file': 'str',
+                                    '*devlist': 'str',
+                                    '*speed': 'int',
+                                    '*max-workers': 'int',
+                                    '*fleecing': 'bool' },
+  'returns': 'UuidInfo', 'coroutine': true }
+
+##
+# @query-backup:
+#
+# Returns information about current/last backup task.
+#
+# Returns: @BackupStatus
+#
+##
+{ 'command': 'query-backup', 'returns': 'BackupStatus' }
+
+##
+# @backup-cancel:
+#
+# Cancel the current executing backup process.
+#
+# .. note:: This command succeeds even if there is no backup process
+#     running.
+#
+##
+{ 'command': 'backup-cancel', 'coroutine': true }
+
+##
+# @ProxmoxSupportStatus:
+#
+# Contains info about supported features added by Proxmox.
+#
+# @pbs-dirty-bitmap: True if dirty-bitmap-incremental backups to PBS
+#     are supported.
+#
+# @query-bitmap-info: True if the 'query-pbs-bitmap-info' QMP call is
+#     supported.
+#
+# @pbs-dirty-bitmap-savevm: True if 'dirty-bitmaps' migration
+#     capability can safely be set for savevm-async.
+#
+# @pbs-dirty-bitmap-migration: True if safe migration of dirty-bitmaps
+#     including PBS state is supported.  Enabling 'dirty-bitmaps'
+#     migration cap if this is false/unset may lead to crashes on
+#     migration!
+#
+# @pbs-masterkey: True if the QMP backup call supports the
+#     'master_keyfile' parameter.
+#
+# @pbs-library-version: Running version of libproxmox-backup-qemu0
+#     library.
+#
+# @backup-access-api: Whether backup access API for external providers
+#     is supported or not.
+#
+# @backup-fleecing: Whether backup fleecing is supported or not.
+#
+# @backup-max-workers: Whether the 'max-workers' @BackupPerf setting
+#     is supported or not.
+#
+##
+{ 'struct': 'ProxmoxSupportStatus',
+  'data': { 'pbs-dirty-bitmap': 'bool',
+            'query-bitmap-info': 'bool',
+            'pbs-dirty-bitmap-savevm': 'bool',
+            'pbs-dirty-bitmap-migration': 'bool',
+            'pbs-masterkey': 'bool',
+            'pbs-library-version': 'str',
+            'backup-access-api': 'bool',
+            'backup-fleecing': 'bool',
+            'backup-max-workers': 'bool' } }
+
+##
+# @query-proxmox-support:
+#
+# Returns information about supported features added by Proxmox.
+#
+# Returns: @ProxmoxSupportStatus
+#
+##
+{ 'command': 'query-proxmox-support', 'returns': 'ProxmoxSupportStatus' }
+
+##
+# @PBSBitmapAction:
+#
+# An action taken on a dirty-bitmap when a backup job was started.
+#
+# @not-used: Bitmap mode was not enabled.
+#
+# @not-used-removed: Bitmap mode was not enabled, but a bitmap from a
+#                    previous backup still existed and was removed.
+#
+# @new: A new bitmap was attached to the drive for this backup.
+#
+# @used: An existing bitmap will be used to only backup changed data.
+#
+# @invalid: A bitmap existed, but had to be cleared since it's
+#     associated base snapshot did not match the base given for the
+#     current job or the crypt mode has changed.
+#
+# @missing-recreated: A bitmap for incremental backup was expected to
+#     be present, but was missing and thus got recreated.  For
+#     example, this can happen if the drive was re-attached or if the
+#     bitmap was deleted for some other reason.  PBS does not
+#     currently keep track of this; the backup-access mechanism does.
+#
+##
+{ 'enum': 'PBSBitmapAction',
+  'data': ['not-used', 'not-used-removed', 'new', 'used', 'invalid',
+           'missing-recreated'] }
+
+##
+# @PBSBitmapInfo:
+#
+# Contains information about dirty bitmaps used for each drive in a
+# PBS backup.
+#
+# @drive: The underlying drive.
+#
+# @action: The action that was taken when the backup started.
+#
+# @size: The total size of the drive.
+#
+# @dirty: How much of the drive is considered dirty and will be backed
+#     up, or 'size' if everything will be.
+#
+##
+{ 'struct': 'PBSBitmapInfo',
+  'data': { 'drive': 'str', 'action': 'PBSBitmapAction', 'size': 'int',
+            'dirty': 'int' } }
+
+##
+# @query-pbs-bitmap-info:
+#
+# Returns information about dirty bitmaps used on the most recently
+# started backup.  Returns nothing when the last backup was not using
+# PBS or if no backup occured in this session.
+#
+# Returns: @PBSBitmapInfo
+#
+##
+{ 'command': 'query-pbs-bitmap-info', 'returns': ['PBSBitmapInfo'] }
+
+##
+# @BackupAccessInfo:
+#
+# Info associated to a snapshot access for backup.  For more
+# information about the bitmap see @BackupAccessBitmapMode.
+#
+# @node-name: the block node name of the snapshot-access node.
+#
+# @device: the device on top of which the snapshot access was created.
+#
+# @size: the size of the block device in bytes.
+#
+# @bitmap-node-name: the block node name the dirty bitmap is
+#     associated to.
+#
+# @bitmap-name: the name of the dirty bitmap associated to the backup
+#     access.
+#
+# @bitmap-action: the action taken on the dirty bitmap.
+#
+##
+{ 'struct': 'BackupAccessInfo',
+  'data': { 'node-name': 'str', 'device': 'str', 'size': 'size',
+            '*bitmap-node-name': 'str', '*bitmap-name': 'str',
+            '*bitmap-action': 'PBSBitmapAction' } }
+
+##
+# @BackupAccessSourceDevice:
+#
+# Source block device information for creating a backup access.
+#
+# @device: the block device name.
+#
+# @bitmap-mode: used to control whether the bitmap should be reused or
+#     recreated or not used.  Default is not using a bitmap.
+#
+##
+{ 'struct': 'BackupAccessSourceDevice',
+  'data': { 'device': 'str', '*bitmap-mode': 'BackupAccessSetupBitmapMode' } }
+
+##
+# @BackupAccessSetupBitmapMode:
+#
+# How to setup a bitmap for a device for @backup-access-setup.
+#
+# @none: do not use a bitmap.  Removes an existing bitmap if present.
+#
+# @new: create and use a new bitmap.
+#
+# @use: try to re-use an existing bitmap.  Create a new one if it
+#     doesn't exist.
+##
+{ 'enum': 'BackupAccessSetupBitmapMode',
+  'data': ['none', 'new', 'use' ] }
+
+##
+# @backup-access-setup:
+#
+# Set up snapshot access to VM drives for an external backup provider.
+# No other backup or backup access can be done before tearing down the
+# backup access.
+#
+# @target-id: the unique ID of the backup target.
+#
+# @devices: list of devices for which to create the backup access.
+#     Also controls whether to use/create a bitmap for the device.
+#     Check the @bitmap-action in the result to see what action was
+#     actually taken for the bitmap.  Each target controls its own
+#     bitmaps.
+#
+# Returns: a list of @BackupAccessInfo, one for each device.
+#
+##
+{ 'command': 'backup-access-setup',
+  'data': { 'target-id': 'str', 'devices': [ 'BackupAccessSourceDevice' ] },
+  'returns': [ 'BackupAccessInfo' ], 'coroutine': true }
+
+##
+# @backup-access-teardown:
+#
+# Tear down previously setup snapshot access for the same target.
+#
+# @target-id: the ID of the backup target.
+#
+# @success: whether the backup done by the external provider was
+#     successful.
+#
+##
+{ 'command': 'backup-access-teardown',
+  'data': { 'target-id': 'str', 'success': 'bool' },
+  'coroutine': true }
+
+##
 # @BlockDeviceTimedStats:
 #
 # Statistics of a block device during a given interval of time.
@@ -2280,6 +2639,15 @@
 #     destination (all the disk, only the sectors allocated in the
 #     topmost image, or only new I/O).
 #
+# @bitmap: The name of a bitmap to use for sync=bitmap mode.  This
+#     argument must be present for bitmap mode and absent otherwise.
+#     The bitmap's granularity is used instead of @granularity (Since
+#     4.1).
+#
+# @bitmap-mode: Specifies the type of data the bitmap should contain
+#     after the operation concludes.  Must be present if sync is
+#     "bitmap".  Must NOT be present otherwise.  (Since 4.1)
+#
 # @granularity: granularity of the dirty bitmap, default is 64K if the
 #     image format doesn't have clusters, 4K if the clusters are
 #     smaller than that, else the cluster size.  Must be a power of 2
@@ -2321,7 +2689,9 @@
 { 'struct': 'DriveMirror',
   'data': { '*job-id': 'str', 'device': 'str', 'target': 'str',
             '*format': 'str', '*node-name': 'str', '*replaces': 'str',
-            'sync': 'MirrorSyncMode', '*mode': 'NewImageMode',
+            'sync': 'MirrorSyncMode', '*bitmap': 'str',
+            '*bitmap-mode': 'BitmapSyncMode',
+            '*mode': 'NewImageMode',
             '*speed': 'int', '*granularity': 'uint32',
             '*buf-size': 'int', '*on-source-error': 'BlockdevOnError',
             '*on-target-error': 'BlockdevOnError',
@@ -2598,6 +2968,15 @@
 #     destination (all the disk, only the sectors allocated in the
 #     topmost image, or only new I/O).
 #
+# @bitmap: The name of a bitmap to use for sync=bitmap mode.  This
+#     argument must be present for bitmap mode and absent otherwise.
+#     The bitmap's granularity is used instead of @granularity (since
+#     4.1).
+#
+# @bitmap-mode: Specifies the type of data the bitmap should contain
+#     after the operation concludes.  Must be present if sync is
+#     "bitmap".  Must NOT be present otherwise.  (Since 4.1)
+#
 # @granularity: granularity of the dirty bitmap, default is 64K if the
 #     image format doesn't have clusters, 4K if the clusters are
 #     smaller than that, else the cluster size.  Must be a power of 2
@@ -2650,7 +3029,8 @@
 { 'command': 'blockdev-mirror',
   'data': { '*job-id': 'str', 'device': 'str', 'target': 'str',
             '*replaces': 'str',
-            'sync': 'MirrorSyncMode',
+            'sync': 'MirrorSyncMode', '*bitmap': 'str',
+            '*bitmap-mode': 'BitmapSyncMode',
             '*speed': 'int', '*granularity': 'uint32',
             '*buf-size': 'int', '*on-source-error': 'BlockdevOnError',
             '*on-target-error': 'BlockdevOnError',
@@ -3342,7 +3722,8 @@
 # Since: 2.9
 ##
 { 'enum': 'BlockdevDriver',
-  'data': [ 'blkdebug', 'blklogwrites', 'blkreplay', 'blkverify', 'bochs',
+  'data': [ 'alloc-track',
+            'blkdebug', 'blklogwrites', 'blkreplay', 'blkverify', 'bochs',
             'cloop', 'compress', 'copy-before-write', 'copy-on-read', 'dmg',
             'file', 'snapshot-access', 'ftp', 'ftps',
             {'name': 'gluster', 'features': [ 'deprecated' ] },
@@ -3356,11 +3737,12 @@
             'parallels', 'preallocate', 'qcow', 'qcow2', 'qed', 'quorum',
             'raw', 'rbd',
             { 'name': 'replication', 'if': 'CONFIG_REPLICATION' },
+            'pbs',
             'ssh', 'throttle', 'vdi', 'vhdx',
             { 'name': 'virtio-blk-vfio-pci', 'if': 'CONFIG_BLKIO' },
             { 'name': 'virtio-blk-vhost-user', 'if': 'CONFIG_BLKIO' },
             { 'name': 'virtio-blk-vhost-vdpa', 'if': 'CONFIG_BLKIO' },
-            'vmdk', 'vpc', 'vvfat' ] }
+            'vmdk', 'vpc', 'vvfat', 'zeroinit' ] }
 
 ##
 # @BlockdevOptionsFile:
@@ -3441,6 +3823,48 @@
 ##
 { 'struct': 'BlockdevOptionsNull',
   'data': { '*size': 'int', '*latency-ns': 'uint64', '*read-zeroes': 'bool' } }
+
+##
+# @BlockdevOptionsAllocTrack:
+#
+# Driver specific block device options for the alloc-track backend.
+#
+# @backing: backing file with the data.
+#
+# @auto-remove: whether the alloc-track driver should drop itself
+#     after completing the stream.
+#
+##
+{ 'struct': 'BlockdevOptionsAllocTrack',
+  'base': 'BlockdevOptionsGenericFormat',
+  'data': { 'auto-remove': 'bool', 'backing': 'BlockdevRefOrNull' } }
+
+##
+# @BlockdevOptionsPbs:
+#
+# Driver specific block device options for the PBS backend.
+#
+# @repository: Proxmox Backup Server repository.
+#
+# @snapshot: backup snapshots ID.
+#
+# @archive: archive name.
+#
+# @keyfile: keyfile to use for encryption.
+#
+# @password: password to use for connection.
+#
+# @fingerprint: backup server fingerprint.
+#
+# @key_password: password to unlock key.
+#
+# @namespace: namespace where backup snapshot lives.
+#
+##
+{ 'struct': 'BlockdevOptionsPbs',
+  'data': { 'repository': 'str', 'snapshot': 'str', 'archive': 'str',
+            '*keyfile': 'str', '*password': 'str', '*fingerprint': 'str',
+            '*key_password': 'str', '*namespace': 'str' } }
 
 ##
 # @BlockdevOptionsNVMe:
@@ -4858,6 +5282,7 @@
             '*detect-zeroes': 'BlockdevDetectZeroesOptions' },
   'discriminator': 'driver',
   'data': {
+      'alloc-track':'BlockdevOptionsAllocTrack',
       'blkdebug':   'BlockdevOptionsBlkdebug',
       'blklogwrites':'BlockdevOptionsBlklogwrites',
       'blkverify':  'BlockdevOptionsBlkverify',
@@ -4886,6 +5311,7 @@
       'nfs':        'BlockdevOptionsNfs',
       'null-aio':   'BlockdevOptionsNull',
       'null-co':    'BlockdevOptionsNull',
+      'pbs':        'BlockdevOptionsPbs',
       'nvme':       'BlockdevOptionsNVMe',
       'nvme-io_uring': { 'type': 'BlockdevOptionsNvmeIoUring',
                          'if': 'CONFIG_BLKIO' },
@@ -4915,7 +5341,8 @@
                       'if': 'CONFIG_BLKIO' },
       'vmdk':       'BlockdevOptionsGenericCOWFormat',
       'vpc':        'BlockdevOptionsGenericFormat',
-      'vvfat':      'BlockdevOptionsVVFAT'
+      'vvfat':      'BlockdevOptionsVVFAT',
+      'zeroinit':   'BlockdevOptionsGenericFormat'
   } }
 
 ##
@@ -5133,6 +5560,10 @@
 # @extent-size-hint: Extent size hint to add to the image file; 0 for
 #     not adding an extent size hint (default: 1 MB, since 5.1)
 #
+# @locking: whether to enable file locking.  If set to 'auto', only
+#     enable when Open File Descriptor (OFD) locking API is available
+#     (default: auto).
+#
 # Since: 2.12
 ##
 { 'struct': 'BlockdevCreateOptionsFile',
@@ -5140,7 +5571,8 @@
             'size':                 'size',
             '*preallocation':       'PreallocMode',
             '*nocow':               'bool',
-            '*extent-size-hint':    'size'} }
+            '*extent-size-hint':    'size',
+            '*locking':         'OnOffAuto' } }
 
 ##
 # @BlockdevCreateOptionsGluster:

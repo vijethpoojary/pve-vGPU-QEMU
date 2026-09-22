@@ -1,0 +1,1484 @@
+Build started at 2026-09-22T14:52:33.949132
+Main binary: /usr/bin/python3
+Build Options: -Ddocs=disabled -Dplugins=true -Dlibiscsi=enabled -Dlinux_io_uring=enabled -Dlinux_aio=enabled --native-file=config-meson.cross
+Python system: Linux
+The Meson build system
+Version: 1.7.0
+Source dir: /root/pve-vGPU-QEMU
+Build dir: /root/pve-vGPU-QEMU/build2
+Build type: native build
+Project name: qemu
+Project version: 11.0.0
+C compiler for the host machine: cc -m64 (gcc 14.2.0 "cc (Debian 14.2.0-19) 14.2.0")
+C linker for the host machine: cc -m64 ld.bfd 2.44
+-----------
+Detecting archiver via: `ar --version` -> 0
+stdout:
+GNU ar (GNU Binutils for Debian) 2.44
+Copyright (C) 2025 Free Software Foundation, Inc.
+This program is free software; you may redistribute it under the terms of
+the GNU General Public License version 3 or (at your option) any later version.
+This program has absolutely no warranty.
+-----------
+C compiler for the build machine: cc -m64 (gcc 14.2.0 "cc (Debian 14.2.0-19) 14.2.0")
+C linker for the build machine: cc -m64 ld.bfd 2.44
+-----------
+Detecting archiver via: `ar --version` -> 0
+stdout:
+GNU ar (GNU Binutils for Debian) 2.44
+Copyright (C) 2025 Free Software Foundation, Inc.
+This program is free software; you may redistribute it under the terms of
+the GNU General Public License version 3 or (at your option) any later version.
+This program has absolutely no warranty.
+-----------
+Build machine cpu family: x86_64
+Build machine cpu: x86_64
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Target machine cpu family: x86_64
+Target machine cpu: x86_64
+Program scripts/symlink-install-tree.py found: YES (/usr/bin/python3 /root/pve-vGPU-QEMU/scripts/symlink-install-tree.py)
+Program sh found: YES (/usr/bin/sh)
+Program python3 found: YES (/usr/bin/python3)
+C++ compiler for the host machine: c++ -m64 (gcc 14.2.0 "c++ (Debian 14.2.0-19) 14.2.0")
+C++ linker for the host machine: c++ -m64 ld.bfd 2.44
+Compiler for language rust skipped: feature rust disabled
+Program iasl found: NO
+Program bzip2 found: YES (/usr/bin/bzip2)
+Using cached run result:
+Code:
+ 
+        #include<stddef.h>
+        #include<stdio.h>
+        int main(void) {
+            printf("%ld\n", (long)(sizeof(void *)));
+            return 0;
+        }
+Args:
+ functools.partial(<bound method CompilerHolder._determine_args of <[CompilerHolder] holds [GnuCCompiler]: <GnuCCompiler: v14.2.0 `cc -m64`>>>, {'args': [], 'dependencies': [], 'include_directories': [], 'prefix': '', 'no_builtin_args': False})
+Cached run returncode:
+ 0
+Cached run stdout:
+ 8
+
+Cached run stderr:
+ 
+Checking for size of "void *" : 8 (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpo6xxgvyk/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpo6xxgvyk/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fno-link-libatomic 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc: error: unrecognized command-line option '-fno-link-libatomic'
+
+Compiler for C supports arguments -fno-link-libatomic: NO (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpsot2ymn2/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpsot2ymn2/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 -Werror -fstack-protector-strong 
+
+Code:
+ 
+    int main(int argc, char *argv[])
+    {
+      char arr[64], *p = arr, *c = argv[argc - 1];
+      while (*c) {
+          *p++ = *c++;
+      }
+      return 0;
+    }
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpswk6iv7z/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpswk6iv7z/output.exe -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 -Werror -fstack-protector-strong 
+
+Code:
+ 
+    int main(int argc, char *argv[])
+    {
+      char arr[64], *p = arr, *c = argv[argc - 1];
+      while (*c) {
+          *p++ = *c++;
+      }
+      return 0;
+    }
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpzju30345/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpzju30345/output.exe -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 
+
+Code:
+ 
+  #include <ucontext.h>
+  #ifdef __stub_makecontext
+  #error Ignoring glibc stub makecontext which will always fail
+  #endif
+  int main(void) { makecontext(0, 0, 0); return 0; }
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp_f2p324_/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp_f2p324_/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 
+
+Code:
+ 
+  int main(void)
+  {
+  #if defined(__has_feature)
+  #if __has_feature(safe_stack)
+  #error SafeStack Enabled
+  #endif
+  #endif
+      return 0;
+  }
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpyd3zxh6c/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpyd3zxh6c/output.exe -D_FILE_OFFSET_BITS=64 -O0 -Wl,--fatal-warnings -Wl,-z,relro 
+
+Code:
+ int main(void) { return 0; }
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports link arguments -Wl,-z,relro: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmprcs2uzcz/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmprcs2uzcz/output.exe -D_FILE_OFFSET_BITS=64 -O0 -Wl,--fatal-warnings -Wl,-z,now 
+
+Code:
+ int main(void) { return 0; }
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports link arguments -Wl,-z,now: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpswcoqpcr/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpswcoqpcr/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 -O2 -fzero-call-used-regs=used-gpr 
+
+Code:
+ extern struct { void (*cb)(void); } s; void f(void) { s.cb(); }
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Checking if "-fzero-call-used-regs=used-gpr" compiles: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpeusobenc/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpeusobenc/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 -Wthread-safety -Werror 
+
+Code:
+ 
+    struct __attribute__((capability("mutex"))) mutex {};
+    void lock(struct mutex *m) __attribute__((acquire_capability(m)));
+    void unlock(struct mutex *m) __attribute__((release_capability(m)));
+
+    void test(void) {
+      struct mutex __attribute__((cleanup(unlock))) m;
+      lock(&m);
+    }
+  
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc: error: unrecognized command-line option '-Wthread-safety'
+
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpz5iljur3/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpz5iljur3/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -mcx16 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -mcx16: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpnk8exdtr/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpnk8exdtr/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -msse2 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -msse2: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpwdfynizd/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpwdfynizd/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -D_GNU_SOURCE 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -D_GNU_SOURCE: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp7x_9vobz/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp7x_9vobz/output.obj -c -O0 -D_FILE_OFFSET_BITS=64 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -D_FILE_OFFSET_BITS=64: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpsx8zzpus/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpsx8zzpus/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -D_LARGEFILE_SOURCE 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -D_LARGEFILE_SOURCE: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpo7ed3cww/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpo7ed3cww/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fno-strict-aliasing 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -fno-strict-aliasing: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp2ynd45zl/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp2ynd45zl/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fno-common 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -fno-common: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp6djepz10/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp6djepz10/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fwrapv 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -fwrapv: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp6riu3gog/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp6riu3gog/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -ftrivial-auto-var-init=zero 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -ftrivial-auto-var-init=zero: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpg41naibo/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpg41naibo/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fzero-call-used-regs=used-gpr 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -fzero-call-used-regs=used-gpr: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpwsq086gk/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpwsq086gk/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fstack-protector-strong 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -fstack-protector-strong: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp9m2pbj0e/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp9m2pbj0e/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wempty-body 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wempty-body: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpwgo5_4i8/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpwgo5_4i8/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wendif-labels 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wendif-labels: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpr9xoop96/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpr9xoop96/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wexpansion-to-defined 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wexpansion-to-defined: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpgstqb7vj/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpgstqb7vj/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wformat-overflow=2 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wformat-overflow=2: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp2kp6v_ix/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp2kp6v_ix/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wformat-security 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc1: warning: '-Wformat-security' ignored without '-Wformat' [-Wformat-security]
+
+Compiler for C supports arguments -Wformat-security: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpssp21b1z/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpssp21b1z/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wformat-y2k 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc1: warning: '-Wformat-y2k' ignored without '-Wformat' [-Wformat-y2k]
+
+Compiler for C supports arguments -Wformat-y2k: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp79o9hjmn/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp79o9hjmn/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wignored-qualifiers 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wignored-qualifiers: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpriq9cwjx/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpriq9cwjx/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wimplicit-fallthrough=2 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wimplicit-fallthrough=2: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpxdof63ju/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpxdof63ju/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Winit-self 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Winit-self: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpi9sn6rhi/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpi9sn6rhi/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wmissing-format-attribute 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wmissing-format-attribute: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpwxj5h8ve/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpwxj5h8ve/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wmissing-prototypes 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wmissing-prototypes: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp47sj63th/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp47sj63th/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wnested-externs 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wnested-externs: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp2n2ki1j3/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp2n2ki1j3/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wold-style-declaration 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wold-style-declaration: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpfd9rqbje/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpfd9rqbje/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wold-style-definition 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wold-style-definition: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp_508m_ad/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp_508m_ad/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wredundant-decls 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wredundant-decls: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp2z7vuts2/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp2z7vuts2/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wshadow=local 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wshadow=local: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpxzh_341m/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpxzh_341m/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wstrict-prototypes 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wstrict-prototypes: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpfcy_0lqr/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpfcy_0lqr/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wtype-limits 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wtype-limits: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp32tdo_nj/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp32tdo_nj/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wundef 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wundef: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp9tevsszo/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp9tevsszo/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wvla 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wvla: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp56jjjyu1/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp56jjjyu1/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wwrite-strings 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wwrite-strings: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmph99opt9b/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmph99opt9b/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wgnu-variable-sized-type-not-at-end -Wno-gnu-variable-sized-type-not-at-end 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc: error: unrecognized command-line option '-Wgnu-variable-sized-type-not-at-end'
+
+Compiler for C supports arguments -Wno-gnu-variable-sized-type-not-at-end: NO (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpomnexs9s/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpomnexs9s/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Winitializer-overrides -Wno-initializer-overrides 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc: error: unrecognized command-line option '-Winitializer-overrides'
+
+Compiler for C supports arguments -Wno-initializer-overrides: NO (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpytx0h8nz/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpytx0h8nz/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wmissing-include-dirs -Wno-missing-include-dirs 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wno-missing-include-dirs: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpm04zh3wa/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpm04zh3wa/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wpsabi -Wno-psabi 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wno-psabi: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpf_hnbp91/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpf_hnbp91/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wshift-negative-value -Wno-shift-negative-value 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C supports arguments -Wno-shift-negative-value: YES (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp16fwizpt/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp16fwizpt/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wstring-plus-int -Wno-string-plus-int 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc: error: unrecognized command-line option '-Wstring-plus-int'
+
+Compiler for C supports arguments -Wno-string-plus-int: NO (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmph8p0np3_/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmph8p0np3_/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wtautological-type-limit-compare -Wno-tautological-type-limit-compare 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc: error: unrecognized command-line option '-Wtautological-type-limit-compare'; did you mean '-Wtautological-compare'?
+
+Compiler for C supports arguments -Wno-tautological-type-limit-compare: NO (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp_zmm3epv/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp_zmm3epv/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Wtypedef-redefinition -Wno-typedef-redefinition 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc: error: unrecognized command-line option '-Wtypedef-redefinition'
+
+Compiler for C supports arguments -Wno-typedef-redefinition: NO (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp_ojmnjwb/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp_ojmnjwb/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -mcx16 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -mcx16: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpoh9ir6vk/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpoh9ir6vk/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -msse2 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -msse2: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpfrg3_pw7/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpfrg3_pw7/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -D_GNU_SOURCE 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -D_GNU_SOURCE: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp81y1jtbx/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp81y1jtbx/output.obj -c -O0 -fpermissive -D_FILE_OFFSET_BITS=64 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -D_FILE_OFFSET_BITS=64: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpx0n5xdxd/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpx0n5xdxd/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -D_LARGEFILE_SOURCE 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -D_LARGEFILE_SOURCE: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp17se0rkw/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp17se0rkw/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -fno-strict-aliasing 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -fno-strict-aliasing: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp5od14ox_/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp5od14ox_/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -fno-common 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -fno-common: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpi_gkiqf0/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpi_gkiqf0/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -fwrapv 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -fwrapv: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp6xfccppe/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp6xfccppe/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -ftrivial-auto-var-init=zero 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -ftrivial-auto-var-init=zero: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpdxq0k6am/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpdxq0k6am/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -fzero-call-used-regs=used-gpr 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -fzero-call-used-regs=used-gpr: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpzgb9pqjs/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpzgb9pqjs/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -D__STDC_LIMIT_MACROS 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -D__STDC_LIMIT_MACROS: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpu33rh37d/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpu33rh37d/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -D__STDC_CONSTANT_MACROS 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -D__STDC_CONSTANT_MACROS: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpo16tjpe4/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpo16tjpe4/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -D__STDC_FORMAT_MACROS 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -D__STDC_FORMAT_MACROS: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpgmecqbao/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpgmecqbao/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -fstack-protector-strong 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -fstack-protector-strong: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpl0gmy8_f/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpl0gmy8_f/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wempty-body 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wempty-body: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp4exb7vve/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp4exb7vve/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wendif-labels 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wendif-labels: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpj60fe57j/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpj60fe57j/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wexpansion-to-defined 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wexpansion-to-defined: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp40s38ldk/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp40s38ldk/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wformat-overflow=2 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wformat-overflow=2: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpj5qprwre/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpj5qprwre/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wformat-security 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc1plus: warning: '-Wformat-security' ignored without '-Wformat' [-Wformat-security]
+
+Compiler for C++ supports arguments -Wformat-security: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp2zf8j3nc/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp2zf8j3nc/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wformat-y2k 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc1plus: warning: '-Wformat-y2k' ignored without '-Wformat' [-Wformat-y2k]
+
+Compiler for C++ supports arguments -Wformat-y2k: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp475vqde6/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp475vqde6/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wignored-qualifiers 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wignored-qualifiers: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp2b4aaq1s/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp2b4aaq1s/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wimplicit-fallthrough=2 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wimplicit-fallthrough=2: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpij_nj9n3/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpij_nj9n3/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Winit-self 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Winit-self: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpi7ex4b0k/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpi7ex4b0k/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wmissing-format-attribute 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wmissing-format-attribute: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp_r2zhj40/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp_r2zhj40/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wmissing-prototypes 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc1plus: warning: command-line option '-Wmissing-prototypes' is valid for C/ObjC but not for C++
+
+Compiler for C++ supports arguments -Wmissing-prototypes: NO (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpre76g91y/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpre76g91y/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wnested-externs 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc1plus: warning: command-line option '-Wnested-externs' is valid for C/ObjC but not for C++
+
+Compiler for C++ supports arguments -Wnested-externs: NO (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp4h12z0jm/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp4h12z0jm/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wold-style-declaration 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc1plus: warning: command-line option '-Wold-style-declaration' is valid for C/ObjC but not for C++
+
+Compiler for C++ supports arguments -Wold-style-declaration: NO (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp2e9n1uat/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp2e9n1uat/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wold-style-definition 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc1plus: warning: command-line option '-Wold-style-definition' is valid for C/ObjC but not for C++
+
+Compiler for C++ supports arguments -Wold-style-definition: NO (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpdnri8gg5/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpdnri8gg5/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wredundant-decls 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wredundant-decls: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpigvh7nv2/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpigvh7nv2/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wshadow=local 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wshadow=local: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpra_r31ns/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpra_r31ns/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wstrict-prototypes 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ cc1plus: warning: command-line option '-Wstrict-prototypes' is valid for C/ObjC but not for C++
+
+Compiler for C++ supports arguments -Wstrict-prototypes: NO (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmptkir_6_4/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmptkir_6_4/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wtype-limits 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wtype-limits: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp6ik1lst9/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp6ik1lst9/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wundef 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wundef: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp3ygcnyo7/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp3ygcnyo7/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wvla 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wvla: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpwq81xw3g/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpwq81xw3g/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wwrite-strings 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wwrite-strings: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp4h832du8/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp4h832du8/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wgnu-variable-sized-type-not-at-end -Wno-gnu-variable-sized-type-not-at-end 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ c++: error: unrecognized command-line option '-Wgnu-variable-sized-type-not-at-end'
+
+Compiler for C++ supports arguments -Wno-gnu-variable-sized-type-not-at-end: NO (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp0_h6_c32/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp0_h6_c32/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Winitializer-overrides -Wno-initializer-overrides 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ c++: error: unrecognized command-line option '-Winitializer-overrides'
+
+Compiler for C++ supports arguments -Wno-initializer-overrides: NO (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmploqilpq0/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmploqilpq0/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wmissing-include-dirs -Wno-missing-include-dirs 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wno-missing-include-dirs: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpzqkrckdx/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpzqkrckdx/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wpsabi -Wno-psabi 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wno-psabi: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpqbqbq0vk/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpqbqbq0vk/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wshift-negative-value -Wno-shift-negative-value 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Compiler for C++ supports arguments -Wno-shift-negative-value: YES (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp4zqt5ezr/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmp4zqt5ezr/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wstring-plus-int -Wno-string-plus-int 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ c++: error: unrecognized command-line option '-Wstring-plus-int'
+
+Compiler for C++ supports arguments -Wno-string-plus-int: NO (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpgxmkpc2x/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpgxmkpc2x/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wtautological-type-limit-compare -Wno-tautological-type-limit-compare 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ c++: error: unrecognized command-line option '-Wtautological-type-limit-compare'; did you mean '-Wtautological-compare'?
+
+Compiler for C++ supports arguments -Wno-tautological-type-limit-compare: NO (cached)
+Using cached compile:
+Cached command line:  c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpoi5mpzzz/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpoi5mpzzz/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wtypedef-redefinition -Wno-typedef-redefinition 
+
+Code:
+ extern int i;
+int i;
+
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ c++: error: unrecognized command-line option '-Wtypedef-redefinition'
+
+Compiler for C++ supports arguments -Wno-typedef-redefinition: NO (cached)
+Program cgcc found: NO
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmpm8xtac65
+Code:
+int main(void) { return 0; }
+
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpm8xtac65/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpm8xtac65/output.exe -D_FILE_OFFSET_BITS=64 -O0 -lm -Wl,--allow-shlib-undefined` -> 0
+Library m found: YES
+Dependency threads found: YES unknown (cached)
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmpu_o_iz2k
+Code:
+int main(void) { return 0; }
+
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpu_o_iz2k/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpu_o_iz2k/output.exe -D_FILE_OFFSET_BITS=64 -O0 -lutil -Wl,--allow-shlib-undefined` -> 0
+Library util found: YES
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmpfwy45qya
+Code:
+int main(void) { return 0; }
+-----------
+Command line: `c++ -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpfwy45qya/testfile.cpp -o /root/pve-vGPU-QEMU/build2/meson-private/tmpfwy45qya/output.exe -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -framework Hypervisor` -> 1
+stderr:
+c++: error: unrecognized command-line option '-framework'
+-----------
+Run-time dependency appleframeworks found: NO (tried framework)
+Pkg-config binary for host machine specified from cross file, native file, or env var as ['pkg-config']
+Found pkg-config: YES (/usr/bin/pkg-config) 1.8.1
+Determining dependency 'xencontrol' with pkg-config executable '/usr/bin/pkg-config'
+env[PKG_CONFIG_PATH]: 
+env[PKG_CONFIG]: /usr/bin/pkg-config
+-----------
+Called: `/usr/bin/pkg-config --modversion xencontrol` -> 1
+stderr:
+Package xencontrol was not found in the pkg-config search path.
+Perhaps you should add the directory containing `xencontrol.pc'
+to the PKG_CONFIG_PATH environment variable
+Package 'xencontrol', required by 'virtual:world', not found
+-----------
+Run-time dependency xencontrol found: NO (tried pkgconfig)
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmphp26w5zc
+Code:
+int main(void) { return 0; }
+
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmphp26w5zc/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmphp26w5zc/output.exe -D_FILE_OFFSET_BITS=64 -O0 -lxenstore -Wl,--allow-shlib-undefined` -> 1
+stderr:
+/usr/bin/ld: cannot find -lxenstore: No such file or directory
+collect2: error: ld returned 1 exit status
+-----------
+Using cached run result:
+Code:
+ 
+        #include<stddef.h>
+        #include<stdio.h>
+        int main(void) {
+            printf("%ld\n", (long)(sizeof(void *)));
+            return 0;
+        }
+Args:
+ []
+Cached run returncode:
+ 0
+Cached run stdout:
+ 8
+
+Cached run stderr:
+ 
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmp1oeqo1fr
+Code:
+
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp1oeqo1fr/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp1oeqo1fr/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 --print-search-dirs` -> 0
+stdout:
+install: /usr/lib/gcc/x86_64-linux-gnu/14/
+programs: =/usr/libexec/gcc/x86_64-linux-gnu/14/:/usr/libexec/gcc/x86_64-linux-gnu/14/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/14/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/14/../../../../x86_64-linux-gnu/bin/x86_64-linux-gnu/14/:/usr/lib/gcc/x86_64-linux-gnu/14/../../../../x86_64-linux-gnu/bin/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/14/../../../../x86_64-linux-gnu/bin/
+libraries: =/usr/lib/gcc/x86_64-linux-gnu/14/:/usr/lib/gcc/x86_64-linux-gnu/14/../../../../x86_64-linux-gnu/lib/x86_64-linux-gnu/14/:/usr/lib/gcc/x86_64-linux-gnu/14/../../../../x86_64-linux-gnu/lib/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/14/../../../../x86_64-linux-gnu/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/14/:/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/14/../../../../lib/:/lib/x86_64-linux-gnu/14/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/14/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/14/../../../../x86_64-linux-gnu/lib/:/usr/lib/gcc/x86_64-linux-gnu/14/../../../:/lib/:/usr/lib/
+-----------
+Library xenstore found: NO
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmp1trirrxq
+Code:
+int main(void) { return 0; }
+
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp1trirrxq/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp1trirrxq/output.exe -D_FILE_OFFSET_BITS=64 -O0 -lxenctrl -Wl,--allow-shlib-undefined` -> 1
+stderr:
+/usr/bin/ld: cannot find -lxenctrl: No such file or directory
+collect2: error: ld returned 1 exit status
+-----------
+Library xenctrl found: NO
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmpq0j8qlt1
+Code:
+int main(void) { return 0; }
+
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpq0j8qlt1/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpq0j8qlt1/output.exe -D_FILE_OFFSET_BITS=64 -O0 -lxendevicemodel -Wl,--allow-shlib-undefined` -> 1
+stderr:
+/usr/bin/ld: cannot find -lxendevicemodel: No such file or directory
+collect2: error: ld returned 1 exit status
+-----------
+Library xendevicemodel found: NO
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmp93kz3kst
+Code:
+int main(void) { return 0; }
+
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp93kz3kst/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp93kz3kst/output.exe -D_FILE_OFFSET_BITS=64 -O0 -lxenforeignmemory -Wl,--allow-shlib-undefined` -> 1
+stderr:
+/usr/bin/ld: cannot find -lxenforeignmemory: No such file or directory
+collect2: error: ld returned 1 exit status
+-----------
+Library xenforeignmemory found: NO
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmpwxi_psv7
+Code:
+int main(void) { return 0; }
+
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpwxi_psv7/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpwxi_psv7/output.exe -D_FILE_OFFSET_BITS=64 -O0 -lxengnttab -Wl,--allow-shlib-undefined` -> 1
+stderr:
+/usr/bin/ld: cannot find -lxengnttab: No such file or directory
+collect2: error: ld returned 1 exit status
+-----------
+Library xengnttab found: NO
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmp5a3mtatw
+Code:
+int main(void) { return 0; }
+
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmp5a3mtatw/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp5a3mtatw/output.exe -D_FILE_OFFSET_BITS=64 -O0 -lxenevtchn -Wl,--allow-shlib-undefined` -> 1
+stderr:
+/usr/bin/ld: cannot find -lxenevtchn: No such file or directory
+collect2: error: ld returned 1 exit status
+-----------
+Library xenevtchn found: NO
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmpqxgds1sm
+Code:
+int main(void) { return 0; }
+
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpqxgds1sm/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpqxgds1sm/output.exe -D_FILE_OFFSET_BITS=64 -O0 -lxentoolcore -Wl,--allow-shlib-undefined` -> 1
+stderr:
+/usr/bin/ld: cannot find -lxentoolcore: No such file or directory
+collect2: error: ld returned 1 exit status
+-----------
+Library xentoolcore found: NO
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmpsvn0da45
+Source file: /root/pve-vGPU-QEMU/scripts/xen-detect.c
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/scripts/xen-detect.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpsvn0da45/output.exe -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 -DCONFIG_XEN_CTRL_INTERFACE_VERSION=41100` -> 1
+stderr:
+/root/pve-vGPU-QEMU/scripts/xen-detect.c:7:12: fatal error: xendevicemodel.h: No such file or directory
+    7 |   #include <xendevicemodel.h>
+      |            ^~~~~~~~~~~~~~~~~~
+compilation terminated.
+-----------
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmp3argya29
+Source file: /root/pve-vGPU-QEMU/scripts/xen-detect.c
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/scripts/xen-detect.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmp3argya29/output.exe -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 -DCONFIG_XEN_CTRL_INTERFACE_VERSION=41000` -> 1
+stderr:
+/root/pve-vGPU-QEMU/scripts/xen-detect.c:24:12: fatal error: xenforeignmemory.h: No such file or directory
+   24 |   #include <xenforeignmemory.h>
+      |            ^~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+-----------
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmpg4zkrmg4
+Source file: /root/pve-vGPU-QEMU/scripts/xen-detect.c
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/scripts/xen-detect.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpg4zkrmg4/output.exe -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 -DCONFIG_XEN_CTRL_INTERFACE_VERSION=40900` -> 1
+stderr:
+/root/pve-vGPU-QEMU/scripts/xen-detect.c:39:12: fatal error: xendevicemodel.h: No such file or directory
+   39 |   #include <xendevicemodel.h>
+      |            ^~~~~~~~~~~~~~~~~~
+compilation terminated.
+-----------
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmpg5rrstbp
+Source file: /root/pve-vGPU-QEMU/scripts/xen-detect.c
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/scripts/xen-detect.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpg5rrstbp/output.exe -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 -DCONFIG_XEN_CTRL_INTERFACE_VERSION=40800` -> 1
+stderr:
+/root/pve-vGPU-QEMU/scripts/xen-detect.c:60:12: fatal error: xenctrl.h: No such file or directory
+   60 |   #include <xenctrl.h>
+      |            ^~~~~~~~~~~
+compilation terminated.
+-----------
+Running compile:
+Working directory:  /root/pve-vGPU-QEMU/build2/meson-private/tmpx3rpmbsj
+Source file: /root/pve-vGPU-QEMU/scripts/xen-detect.c
+-----------
+Command line: `cc -m64 /root/pve-vGPU-QEMU/scripts/xen-detect.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpx3rpmbsj/output.exe -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 -DCONFIG_XEN_CTRL_INTERFACE_VERSION=40701` -> 1
+stderr:
+/root/pve-vGPU-QEMU/scripts/xen-detect.c:105:12: fatal error: xenctrl.h: No such file or directory
+  105 |   #include <xenctrl.h>
+      |            ^~~~~~~~~~~
+compilation terminated.
+-----------
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Dependency gmodule-no-export-2.0 found: YES 2.84.4 (cached)
+Using cached compile:
+Cached command line:  cc -m64 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/sysprof-6 /root/pve-vGPU-QEMU/build2/meson-private/tmpz0bqhdax/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpz0bqhdax/output.obj -c -pthread -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 
+
+Code:
+ 
+  #include <glib.h>
+  #include <unistd.h>
+
+  #define QEMU_BUILD_BUG_ON(x) \
+  typedef char qemu_build_bug_on[(x)?-1:1] __attribute__((unused));
+
+  int main(void) {
+     QEMU_BUILD_BUG_ON(sizeof(size_t) != GLIB_SIZEOF_SIZE_T);
+     return 0;
+  }
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Using cached compile:
+Cached command line:  cc -m64 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/libmount -I/usr/include/blkid /root/pve-vGPU-QEMU/build2/meson-private/tmpd1sw2lc5/testfile.c -o /root/pve-vGPU-QEMU/build2/meson-private/tmpd1sw2lc5/output.exe -pthread -D_FILE_OFFSET_BITS=64 -O0 -std=gnu11 -Wl,--start-group /usr/lib/x86_64-linux-gnu/libgio-2.0.so /usr/lib/x86_64-linux-gnu/libgobject-2.0.so /usr/lib/x86_64-linux-gnu/libglib-2.0.so /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so -Wl,--end-group 
+
+Code:
+ 
+    #include <gio/gio.h>
+    int main(void)
+    {
+      g_dbus_proxy_new_sync(0, 0, 0, 0, 0, 0, 0, 0);
+      return 0;
+    }
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ 
+Program gdbus-codegen found: YES (/usr/bin/gdbus-codegen)
+Dependency gio-unix-2.0 found: YES 2.84.4 (cached)
+Program scripts/xml-preprocess.py found: YES (/usr/bin/python3 /root/pve-vGPU-QEMU/scripts/xml-preprocess.py)
+Dependency pixman-1 found: YES 0.44.0 (cached)
+Dependency zlib found: YES 1.3.1 (cached)
+Using cached compile:
+Cached command line:  cc -m64 /root/pve-vGPU-QEMU/build2/meson-private/tmpe_y21m2f/testfile.c -E -P -D_FILE_OFFSET_BITS=64 -P -O0 -std=gnu11 
+
+Code:
+ 
+        #ifdef __has_include
+         #if !__has_include("libaio.h")
+          #error "Header 'libaio.h' could not be found"
+         #endif
+        #else
+         #include <libaio.h>
+        #endif
+Cached compiler stdout:
+ 
+Cached compiler stderr:
+ /root/pve-vGPU-QEMU/build2/meson-private/tmpe_y21m2f/testfile.c:4:12: error: #error "Header 'libaio.h' could not be found"
+    4 |           #error "Header 'libaio.h' could not be found"
+      |            ^~~~~
+
+
+../meson.build:1150:14: ERROR: C header 'libaio.h' not found

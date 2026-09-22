@@ -8,12 +8,14 @@ migration_files = files(
   'qemu-file.c',
   'yank_functions.c',
 )
+system_ss.add(libproxmox_backup_qemu)
 
 system_ss.add(files(
   'block-dirty-bitmap.c',
   'block-active.c',
   'channel.c',
   'channel-block.c',
+  'channel-savevm-async.c',
   'cpr.c',
   'cpr-transfer.c',
   'cpr-exec.c',
@@ -31,9 +33,11 @@ system_ss.add(files(
   'multifd-zlib.c',
   'multifd-zero-page.c',
   'options.c',
+  'pbs-state.c',
   'postcopy-ram.c',
   'ram.c',
   'savevm.c',
+  'savevm-async.c',
   'socket.c',
   'tls.c',
 ), gnutls, zlib)

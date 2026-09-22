@@ -4,6 +4,8 @@
 # This work is licensed under the terms of the GNU GPL, version 2 or later.
 # See the COPYING file in the top-level directory.
 
+{ 'include': 'common.json' }
+
 ##
 # ********
 # Machines
@@ -172,6 +174,8 @@
 #
 # @is-default: whether the machine is default
 #
+# @is-current: whether this machine is currently used
+#
 # @cpu-max: maximum number of CPUs supported by the machine type
 #     (since 1.5)
 #
@@ -192,6 +196,8 @@
 #
 # @acpi: machine type supports ACPI (since 8.0)
 #
+# @pve-version: custom PVE version suffix specified as 'machine+pveN'
+#
 # @compat-props: The machine type's compatibility properties.  Only
 #     present when `query-machines` argument @compat-props is true.
 #     (since 9.1)
@@ -204,10 +210,11 @@
 ##
 { 'struct': 'MachineInfo',
   'data': { 'name': 'str', '*alias': 'str',
-            '*is-default': 'bool', 'cpu-max': 'int',
+            '*is-default': 'bool', '*is-current': 'bool', 'cpu-max': 'int',
             'hotpluggable-cpus': 'bool',  'numa-mem-supported': 'bool',
             'deprecated': 'bool', '*default-cpu-type': 'str',
             '*default-ram-id': 'str', 'acpi': 'bool',
+            '*pve-version': 'str',
             '*compat-props': { 'type': ['CompatProperty'],
                                'features': ['unstable'] } } }
 
@@ -295,20 +302,6 @@
 # Since: 1.2
 ##
 { 'command': 'query-target', 'returns': 'QemuTargetInfo' }
-
-##
-# @UuidInfo:
-#
-# Guest UUID information (Universally Unique Identifier).
-#
-# @UUID: the UUID of the guest
-#
-# Since: 0.14
-#
-# .. note:: If no UUID was specified for the guest, the nil UUID (all
-#    zeroes) is returned.
-##
-{ 'struct': 'UuidInfo', 'data': {'UUID': 'str'} }
 
 ##
 # @query-uuid:
@@ -1127,9 +1120,29 @@
 # @actual: the logical size of the VM in bytes.  Formula used:
 #     logical_vm_size = vm_ram_size - balloon_size
 #
+# @last_update: time when stats got updated from guest
+#
+# @mem_swapped_in: number of pages swapped in within the guest
+# 
+# @mem_swapped_out: number of pages swapped out within the guest
+#
+# @major_page_faults: number of major page faults within the guest
+#
+# @minor_page_faults: number of minor page faults within the guest
+# 
+# @free_mem: amount of memory (in bytes) free in the guest
+#
+# @total_mem: amount of memory (in bytes) visible to the guest
+#
+# @max_mem: amount of memory (in bytes) assigned to the guest
+#
 # Since: 0.14
 ##
-{ 'struct': 'BalloonInfo', 'data': {'actual': 'int' } }
+{ 'struct': 'BalloonInfo',
+  'data': {'actual': 'int', '*last_update': 'int', '*mem_swapped_in': 'int',
+           '*mem_swapped_out': 'int', '*major_page_faults': 'int',
+           '*minor_page_faults': 'int', '*free_mem': 'int',
+           '*total_mem': 'int', 'max_mem': 'int' } }
 
 ##
 # @query-balloon:

@@ -588,7 +588,7 @@ static QemuOptsList raw_runtime_opts = {
         {
             .name = "locking",
             .type = QEMU_OPT_STRING,
-            .help = "file locking mode (on/off/auto, default: auto)",
+            .help = "file locking mode (on/off/auto, default: off)",
         },
         {
             .name = "pr-manager",
@@ -688,7 +688,7 @@ static int raw_open_common(BlockDriverState *bs, QDict *options,
         s->use_lock = false;
         break;
     case ON_OFF_AUTO_AUTO:
-        s->use_lock = qemu_has_ofd_lock();
+        s->use_lock = false;
         break;
     default:
         abort();
@@ -2966,6 +2966,7 @@ raw_co_create(BlockdevCreateOptions *options, Error **errp)
     int fd;
     uint64_t perm, shared;
     int result = 0;
+    bool locked = false;
 
     /* Validate options and set default values */
     assert(options->driver == BLOCKDEV_DRIVER_FILE);
@@ -3006,19 +3007,22 @@ raw_co_create(BlockdevCreateOptions *options, Error **errp)
     perm = BLK_PERM_WRITE | BLK_PERM_RESIZE;
     shared = BLK_PERM_ALL & ~BLK_PERM_RESIZE;
 
-    /* Step one: Take locks */
-    result = raw_apply_lock_bytes(NULL, fd, perm, ~shared, false, errp);
-    if (result < 0) {
-        goto out_close;
-    }
+    if (file_opts->locking != ON_OFF_AUTO_OFF) {
+        /* Step one: Take locks */
+        result = raw_apply_lock_bytes(NULL, fd, perm, ~shared, false, errp);
+        if (result < 0) {
+            goto out_close;
+        }
+        locked = true;
 
-    /* Step two: Check that nobody else has taken conflicting locks */
-    result = raw_check_lock_bytes(fd, perm, shared, errp);
-    if (result < 0) {
-        error_append_hint(errp,
-                          "Is another process using the image [%s]?\n",
-                          file_opts->filename);
-        goto out_unlock;
+        /* Step two: Check that nobody else has taken conflicting locks */
+        result = raw_check_lock_bytes(fd, perm, shared, errp);
+        if (result < 0) {
+            error_append_hint(errp,
+                              "Is another process using the image [%s]?\n",
+                              file_opts->filename);
+            goto out_unlock;
+        }
     }
 
     /* Clear the file by truncating it to 0 */
@@ -3072,13 +3076,15 @@ raw_co_create(BlockdevCreateOptions *options, Error **errp)
     }
 
 out_unlock:
-    raw_apply_lock_bytes(NULL, fd, 0, 0, true, &local_err);
-    if (local_err) {
-        /* The above call should not fail, and if it does, that does
-         * not mean the whole creation operation has failed.  So
-         * report it the user for their convenience, but do not report
-         * it to the caller. */
-        warn_report_err(local_err);
+    if (locked) {
+        raw_apply_lock_bytes(NULL, fd, 0, 0, true, &local_err);
+        if (local_err) {
+            /* The above call should not fail, and if it does, that does
+             * not mean the whole creation operation has failed.  So
+             * report it the user for their convenience, but do not report
+             * it to the caller. */
+            warn_report_err(local_err);
+        }
     }
 
 out_close:
@@ -3102,6 +3108,7 @@ raw_co_create_opts(BlockDriver *drv, const char *filename,
     PreallocMode prealloc;
     char *buf = NULL;
     Error *local_err = NULL;
+    OnOffAuto locking;
 
     /* Skip file: protocol prefix */
     strstart(filename, "file:", &filename);
@@ -3124,6 +3131,18 @@ raw_co_create_opts(BlockDriver *drv, const char *filename,
         return -EINVAL;
     }
 
+    locking = qapi_enum_parse(&OnOffAuto_lookup,
+                              qemu_opt_get(opts, "locking"),
+                              ON_OFF_AUTO_AUTO, &local_err);
+    if (local_err) {
+        error_propagate(errp, local_err);
+        return -EINVAL;
+    }
+
+    if (locking == ON_OFF_AUTO_AUTO) {
+        locking = ON_OFF_AUTO_OFF;
+    }
+
     options = (BlockdevCreateOptions) {
         .driver     = BLOCKDEV_DRIVER_FILE,
         .u.file     = {
@@ -3135,6 +3154,8 @@ raw_co_create_opts(BlockDriver *drv, const char *filename,
             .nocow              = nocow,
             .has_extent_size_hint = has_extent_size_hint,
             .extent_size_hint   = extent_size_hint,
+            .has_locking        = true,
+            .locking            = locking,
         },
     };
     return raw_co_create(&options, errp);
