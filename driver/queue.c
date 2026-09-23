@@ -117,7 +117,6 @@ VijGpuSubmitCommand(
     PVIJGPU_COMMAND entry;
     ULONG           nextTail;
     ULONGLONG       seq;
-    KIRQL           oldIrql;
 
     if (ring->Entries == NULL) {
         return STATUS_DEVICE_NOT_READY;

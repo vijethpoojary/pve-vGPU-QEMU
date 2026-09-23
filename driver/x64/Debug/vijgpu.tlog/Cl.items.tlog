@@ -1,0 +1,6 @@
+C:\pve-qemu\qemu\driver\driver.c;C:\pve-qemu\qemu\driver\x64\Debug\driver.obj
+C:\pve-qemu\qemu\driver\device.c;C:\pve-qemu\qemu\driver\x64\Debug\device.obj
+C:\pve-qemu\qemu\driver\queue.c;C:\pve-qemu\qemu\driver\x64\Debug\queue.obj
+C:\pve-qemu\qemu\driver\interrupt.c;C:\pve-qemu\qemu\driver\x64\Debug\interrupt.obj
+C:\pve-qemu\qemu\driver\vram.c;C:\pve-qemu\qemu\driver\x64\Debug\vram.obj
+C:\pve-qemu\qemu\driver\ioctl.c;C:\pve-qemu\qemu\driver\x64\Debug\ioctl.obj

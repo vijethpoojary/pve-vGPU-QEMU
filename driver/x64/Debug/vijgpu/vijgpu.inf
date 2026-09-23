@@ -1,0 +1,78 @@
+; vijgpu.inf - INF file for vijGPU virtual GPU driver
+;
+; Installs the KMDF function driver for:
+;   PCI\VEN_1234&DEV_1200
+
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = Display
+ClassGUID   = {4D36E968-E325-11CE-BFC1-08002BE10318}
+Provider    = %ManufacturerName%
+CatalogFile = vijgpu.cat
+DriverVer = 09/23/2026,17.8.57.704
+PnpLockdown = 1
+
+[DestinationDirs]
+DefaultDestDir = 12    ; %windir%\System32\drivers
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+vijgpu.sys = 1,,
+
+; -----------------------------------------------------------------------
+; Manufacturer and device sections
+; -----------------------------------------------------------------------
+
+[Manufacturer]
+%ManufacturerName% = Standard,NTamd64
+
+[Standard.NTamd64]
+%DeviceName% = vijGPU_Install, PCI\VEN_1234&DEV_1200
+%DeviceName% = vijGPU_Install, PCI\VEN_1234&DEV_1200&REV_01
+
+; -----------------------------------------------------------------------
+; Install sections
+; -----------------------------------------------------------------------
+
+[vijGPU_Install.NT]
+CopyFiles = vijGPU_CopyFiles
+
+[vijGPU_CopyFiles]
+vijgpu.sys
+
+[vijGPU_Install.NT.HW]
+AddReg = vijGPU_HW_AddReg
+
+[vijGPU_HW_AddReg]
+HKR,,"UpperFilters",0x00010000
+; Allow all users to open the device interface
+HKR,,Security,,"D:(A;;GA;;;WD)"
+
+[vijGPU_Install.NT.Services]
+AddService = vijgpu, %SPSVCINST_ASSOCSERVICE%, vijGPU_ServiceInstall
+
+[vijGPU_ServiceInstall]
+DisplayName    = %ServiceDisplayName%
+ServiceType    = 1    ; SERVICE_KERNEL_DRIVER
+StartType      = 3    ; SERVICE_DEMAND_START
+ErrorControl   = 1    ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\vijgpu.sys
+
+[vijGPU_Install.NT.Wdf]
+KmdfService = vijgpu, vijGPU_WdfSect
+
+[vijGPU_WdfSect]
+KmdfLibraryVersion = 1.15
+
+; -----------------------------------------------------------------------
+; Strings
+; -----------------------------------------------------------------------
+
+[Strings]
+SPSVCINST_ASSOCSERVICE = 0x00000002
+ManufacturerName       = "vijGPU Project"
+DiskName               = "vijGPU Installation Disk"
+DeviceName             = "vijGPU Virtual GPU"
+ServiceDisplayName     = "vijGPU Virtual GPU Driver"

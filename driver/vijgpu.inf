@@ -47,6 +47,8 @@ AddReg = vijGPU_HW_AddReg
 
 [vijGPU_HW_AddReg]
 HKR,,"UpperFilters",0x00010000
+; Allow all users to open the device interface
+HKR,,Security,,"D:(A;;GA;;;WD)"
 
 [vijGPU_Install.NT.Services]
 AddService = vijgpu, %SPSVCINST_ASSOCSERVICE%, vijGPU_ServiceInstall

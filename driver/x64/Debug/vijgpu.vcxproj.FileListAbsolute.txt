@@ -1,0 +1,1 @@
+c:\pve-qemu\qemu\driver\x64\Debug\vijgpu.sys
